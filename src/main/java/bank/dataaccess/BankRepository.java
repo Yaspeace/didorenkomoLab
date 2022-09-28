@@ -10,7 +10,7 @@ public class BankRepository {
     public EntityPool<CreditAccount> creditAccounts;
     public EntityPool<Employee> employees;
     public EntityPool<PaymentAccount> paymentAccounts;
-    public EntityPool<User> Users;
+    public EntityPool<User> users;
 
     public BankRepository()
     {
@@ -20,7 +20,7 @@ public class BankRepository {
         creditAccounts = new EntityPool<>();
         employees = new EntityPool<>();
         paymentAccounts = new EntityPool<>();
-        Users = new EntityPool<>();
+        users = new EntityPool<>();
 
     }
 }

@@ -10,14 +10,8 @@ public class User extends BaseNameEntity {
     public Date birthday;
     public String workingPlace;
     public double salary;
-    public List<String> banks;
-    public List<PaymentAccount> paymentAccounts;
-    public List<CreditAccount> creditAccounts;
+    public Bank banks;
+    public PaymentAccount paymentAccounts;
+    public CreditAccount creditAccounts;
     public int creditRate;
-    public User()
-    {
-        banks = new ArrayList<>();
-        paymentAccounts = new ArrayList<>();
-        creditAccounts = new ArrayList<>();
-    }
 }

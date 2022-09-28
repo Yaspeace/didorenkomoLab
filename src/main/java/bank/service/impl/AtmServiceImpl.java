@@ -16,7 +16,7 @@ public class AtmServiceImpl implements AtmService {
     }
     @Override
     public BankAtm getAtm() {
-        return rep.atms.getEntity();
+        return rep.atms.get();
     }
 
     @Override
@@ -30,20 +30,20 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public BankAtm placeToOffice(BankOffice office) {
-        BankAtm atm = this.getAtm();
+    public void placeToOffice(BankAtm atm, BankOffice office) {
+        if(!office.canPlaceAtm) return;
+
         atm.placingOfficeId = office.id;
         atm.placingOffice = office;
         atm.address = office.address;
         rep.atms.update(atm);
         office.atmNum++;
         rep.offices.update(office);
-        return rep.atms.getEntity();
     }
 
     @Override
     public BankAtm setEmployee(Employee employee) {
-        BankAtm atm = rep.atms.getEntity();
+        BankAtm atm = rep.atms.get();
         atm.serveEmployeeId = employee.id;
         atm.serveEmployee = employee;
         return rep.atms.update(atm);
@@ -51,19 +51,21 @@ public class AtmServiceImpl implements AtmService {
 
     @Override
     public double takeMoney(double amount) {
-        BankAtm atm = rep.atms.getEntity();
+        BankAtm atm = rep.atms.get();
         double res = 0;
         if(atm.status == AtmStatuses.noMoney || atm.status == AtmStatuses.notWorking)
             return res;
         res = Math.min(amount, atm.getMoneyAmount());
         atm.setMoneyAmount(atm.getMoneyAmount() - amount);
+        atm.bank.setTotalMoneyAmount(atm.bank.getTotalMoneyAmount() - amount);
         return res;
     }
 
     @Override
     public double depositMoney(double amount) {
-        BankAtm atm = rep.atms.getEntity();
+        BankAtm atm = rep.atms.get();
         atm.setMoneyAmount(atm.getMoneyAmount() + amount);
+        atm.bank.setTotalMoneyAmount(atm.bank.getTotalMoneyAmount() + amount);
         return amount;
     }
 }
