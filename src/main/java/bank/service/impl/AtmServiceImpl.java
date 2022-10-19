@@ -7,13 +7,21 @@ import bank.entity.Employee;
 import bank.entity.enums.AtmStatuses;
 import bank.service.AtmService;
 
+/**Сервис по работе с баноматами*/
 public class AtmServiceImpl implements AtmService {
+
+    /**Репозиторий*/
     private final BankRepository rep;
 
+    /**
+     * Конструктор
+     * @param rep Репозиторий
+     */
     public AtmServiceImpl(BankRepository rep)
     {
         this.rep = rep;
     }
+
     @Override
     public BankAtm getAtm() {
         return rep.atms.get();

@@ -4,17 +4,32 @@ import bank.dataaccess.BankRepository;
 import bank.entity.*;
 import bank.service.*;
 
+/**Сервис по работе с банками*/
 public class BankServiceImpl implements BankService {
+
+    /**Репозиторий*/
     private final BankRepository rep;
 
+    /**Сервис для работы с банкоматами*/
     private final AtmService atmService;
 
+    /**Сервис для работы с офисами*/
     private final BankOfficeService officeService;
 
+    /**Сервис по работе с сотрудниками*/
     private final EmployeeService employeeService;
 
+    /**Сервис по работе с пользователями*/
     private final UserService userService;
 
+    /**
+     * Конструктор
+     * @param rep Репозиторий
+     * @param atmService Сервис для работы с банкоматами
+     * @param officeService Сервис для работы с офисами
+     * @param employeeService Сервис для работы с работниками
+     * @param userService Сервис для работы с пользователями
+     */
     public BankServiceImpl(
             BankRepository rep,
             AtmService atmService,
@@ -83,7 +98,7 @@ public class BankServiceImpl implements BankService {
     @Override
     public User addBankUser(int bankId) {
         Bank b = rep.banks.get();
-        User u = userService.getUser();
+        User u = userService.addNewUser();
 
         u.banks = b;
         b.clientNum++;

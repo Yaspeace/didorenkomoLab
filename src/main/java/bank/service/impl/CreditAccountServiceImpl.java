@@ -4,13 +4,31 @@ import bank.dataaccess.BankRepository;
 import bank.entity.*;
 import bank.service.*;
 
+/**Сервис по работе с кредитными счетами*/
 public class CreditAccountServiceImpl implements CreditAccountService {
+    /**Репозиторий*/
     private final BankRepository rep;
+
+    /**Сервис для работы с пользователями*/
     private final UserService userService;
+
+    /**Сервис для работы с банками*/
     private final BankService bankService;
+
+    /**Сервис для работы с сотрудниками*/
     private final EmployeeService employeeService;
+
+    /**Сервис для работы с платежными счетами*/
     private final PaymentAccountService paymentAccountService;
 
+    /**
+     * Конструктор
+     * @param rep Репозиторий
+     * @param userService Сервис для работы с пользователями
+     * @param bankService Сервис для работы с банками
+     * @param employeeService Сервис для работы с сотрудниками
+     * @param paymentAccountService Сервис для работы с платежными счетами
+     */
     public CreditAccountServiceImpl(BankRepository rep,
                                     UserService userService,
                                     BankService bankService,
@@ -38,6 +56,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return rep.creditAccounts.update(model);
     }
 
+    @Override
     public CreditAccount openCreditAccount(int userId,
                                            int bankId,
                                            int employeeId,
@@ -60,6 +79,9 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         c.paymentAccount = p;
         c.months = months;
         c.monthPayment = monthPayment;
+
+        u.creditAccounts = c;
+        userService.updateUser(u);
 
         return updateCreditAccount(c);
     }
