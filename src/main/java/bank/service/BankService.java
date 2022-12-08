@@ -2,52 +2,60 @@ package bank.service;
 
 import bank.entity.*;
 
+import java.util.Collection;
+
 /**Интерфейс сервисов по работе с банками**/
 public interface BankService {
     /**
      * Получить банк
      * @return Модель банка
      */
-    public Bank getBank();
+    Bank get(int id);
+
+    /**
+     * Получить все банки
+     * @return Коллекция банков
+     */
+    Collection<Bank> getALl();
 
     /**
      * Добавить новый банк
      * @return Модель нового банка
      */
-    public Bank addNewBank();
+    Bank addBank(Bank bank);
 
     /**
      * Изменить банк
-     * @param b Модель банка для изменения
+     * @param bank Модель банка для изменения
      * @return Измененная модель
      */
-    public Bank updateBank(Bank b);
+    Bank updateBank(Bank bank);
 
     /**
      * Добавить банку банкомат
      * @param bankId Идентификатор банка
-     * @return Модель банкомата указанного банка
+     * @return Модель банка
      */
-    public BankAtm addAtmToBank(int bankId);
+    Bank addAtmToBank(int bankId, int atmId) throws Exception;
 
     /**
      * Добавить офис банку
      * @param bankId Идентификатор банка
-     * @return Модель офиса указанного банка
+     * @return Модель банка
      */
-    public BankOffice addNewBankOffice(int bankId);
+    Bank addNewBankOffice(int bankId, int officeId);
 
     /**
      * Добавить сотрудника банку
      * @param bankId Идентификатор банка
-     * @return Модель сотрудника указанного банка
+     * @return Модель банка
      */
-    public Employee addEmployeeToBank(int bankId);
+    Bank addEmployeeToBank(int bankId, int employeeId);
 
     /**
      * Добавить пользователя банка
      * @param bankId Идентификатор банка
-     * @return Модель пользователя указанного банка
+     * @return Модель банка
      */
-    public User addBankUser(int bankId);
+    Bank addBankUser(int bankId, int userId);
 }

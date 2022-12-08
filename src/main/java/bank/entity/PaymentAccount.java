@@ -2,10 +2,14 @@ package bank.entity;
 
 import bank.entity.base.BaseEntity;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**Модель платежного счета*/
 public class PaymentAccount extends BaseEntity {
     /**Идентификатор пользователя*/
     public int userId;
+
     /**Пользователь*/
     public User user;
 
@@ -14,6 +18,13 @@ public class PaymentAccount extends BaseEntity {
 
     /**Кол-во денег на счете*/
     public double moneyAmount;
+
+    /**Кредитные счета, привязанные к данному счету**/
+    public Collection<CreditAccount> creditAccounts;
+
+    public PaymentAccount() {
+        creditAccounts = new LinkedList<>();
+    }
 
     @Override
     public String toString() {

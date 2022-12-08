@@ -2,17 +2,21 @@ package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 
 /**Модель сотрудника*/
 public class Employee extends BaseNameEntity {
     /**Дата рождения*/
     public Date birthday;
+
     /**Должность*/
     public String post;
 
     /**Идентификатор банка*/
     public int bankId;
+
     /**Банк*/
     public Bank bank;
 
@@ -21,6 +25,7 @@ public class Employee extends BaseNameEntity {
 
     /**Идентификатор офиса в котором работает сотрудник*/
     public int officeId;
+
     /**Офис в котором работает сотрудник*/
     public BankOffice office;
 
@@ -29,6 +34,17 @@ public class Employee extends BaseNameEntity {
 
     /**Размер заработной платы*/
     public double salary;
+
+    /**Банкоматы, обслуживаемые данным работником**/
+    public Collection<BankAtm> servingAtms;
+
+    /**Кредитные счета, выданные данным сотрудником**/
+    public Collection<CreditAccount> creditAccounts;
+
+    public Employee() {
+        servingAtms = new LinkedList<>();
+        creditAccounts = new LinkedList<>();
+    }
 
     @Override
     public String toString() {

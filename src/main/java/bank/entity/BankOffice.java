@@ -2,6 +2,9 @@ package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 /**Модель банковского офиса*/
 public class BankOffice extends BaseNameEntity {
     /**Адрес*/
@@ -30,6 +33,17 @@ public class BankOffice extends BaseNameEntity {
 
     /**Стоимость аренды офиса*/
     public double rentPrice;
+
+    /**Сотрудники офиса**/
+    public Collection<Employee> employees;
+
+    /**Банкоматы в офисе**/
+    public Collection<BankAtm> atms;
+
+    public BankOffice() {
+        employees = new LinkedList<>();
+        atms = new LinkedList<>();
+    }
 
     @Override
     public String toString() {

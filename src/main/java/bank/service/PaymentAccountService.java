@@ -2,33 +2,42 @@ package bank.service;
 
 import bank.entity.PaymentAccount;
 
+import java.util.Collection;
+
 /**Интерфейс сервисов по работе с платежными счетами*/
 public interface PaymentAccountService {
-
     /**
      * Получить платежный счет
+     * @param id Идентификатор платежного счета
      * @return Модель платежного счета
      */
-    public PaymentAccount getPaymentAccount();
+    PaymentAccount getPaymentAccount(int id);
 
     /**
-     * Добавить новый платежный счет
+     * Получить все платежные счета
+     * @return Коллекция моделей платежных счетов
+     */
+    Collection<PaymentAccount> getAll();
+
+    /**
+     * Добавить платежный счет
      * @return Модель нового платежного счета
      */
-    public PaymentAccount addNewPaymentAccount();
+    PaymentAccount addPaymentAccount(PaymentAccount paymentAcc);
 
     /**
      * Изменить платежный счет
      * @param model Модель платежного счета для изменения
      * @return Измененная модель
      */
-    public PaymentAccount updatePaymentAccount(PaymentAccount model);
+    PaymentAccount updatePaymentAccount(PaymentAccount model);
 
     /**
      * Открыть платежный счет
      * @param userId Идентификатор пользователя
      * @param bankId Идентификатор банка
+     * @param initialSumm Начальная сумма на счете
      * @return Открытый платежный счет
      */
-    public PaymentAccount openPaymentAccount(int userId, int bankId);
+    PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm);
 }

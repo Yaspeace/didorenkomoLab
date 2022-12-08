@@ -3,12 +3,18 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
 import bank.service.*;
+import helpers.Logger;
+
+import java.util.Collection;
 
 /**Сервис по работе с банками*/
 public class BankServiceImpl implements BankService {
 
     /**Репозиторий*/
     private final BankRepository rep;
+
+    /**Логгер**/
+    private final Logger logger;
 
     /**Сервис для работы с банкоматами*/
     private final AtmService atmService;
@@ -25,6 +31,7 @@ public class BankServiceImpl implements BankService {
     /**
      * Конструктор
      * @param rep Репозиторий
+     * @param logger Логгер
      * @param atmService Сервис для работы с банкоматами
      * @param officeService Сервис для работы с офисами
      * @param employeeService Сервис для работы с работниками
@@ -32,78 +39,95 @@ public class BankServiceImpl implements BankService {
      */
     public BankServiceImpl(
             BankRepository rep,
+            Logger logger,
             AtmService atmService,
             BankOfficeService officeService,
             EmployeeService employeeService,
             UserService userService) {
         this.rep = rep;
+        this.logger = logger;
         this.atmService = atmService;
         this.officeService = officeService;
         this.employeeService = employeeService;
         this.userService = userService;
     }
 
-    @Override
-    public Bank getBank() {
+    public Bank get(int id) {
+        return rep.banks.get(id);
+    }
+
+    public Collection<Bank> getALl() {
         return rep.banks.get();
     }
 
-    @Override
-    public Bank addNewBank() {
-        return rep.banks.update(new Bank());
+    public Bank addBank(Bank bank) {
+        try {
+            rep.banks.add(bank);
+            return bank;
+        }
+        catch(Exception ex) {
+            logger.logError("Ошибка добавления банка: " + ex.getMessage());
+            return null;
+        }
     }
 
-    @Override
     public Bank updateBank(Bank b) {
-        return rep.banks.update(b);
+        try {
+            return rep.banks.update(b);
+        }
+        catch(Exception ex) {
+            logger.logError("Ошибка при изменении банка: " + ex.getMessage());
+            return null;
+        }
     }
 
-    @Override
-    public BankAtm addAtmToBank(int bankId) {
-        Bank b = rep.banks.get();
-        BankAtm atm = atmService.addNewAtm();
+    public Bank addAtmToBank(int bankId, int atmId) throws Exception {
+        Bank bank = this.get(bankId);
+        BankAtm atm = atmService.getAtm(atmId);
+
+        if(bank.atms.contains(atm)) throw new Exception("Банкомат с id=" + atm.id + " уже содержится в банке с id=" + bank.id);
 
         atm.bankId = bankId;
-        atm.bank = b;
-        b.atmNum++;
+        atm.bank = bank;
+        bank.atms.add(atm);
+        bank.atmNum++;
 
-        updateBank(b);
-        return atmService.updateAtm(atm);
+        atmService.updateAtm(atm);
+        return updateBank(bank);
     }
 
-    @Override
-    public BankOffice addNewBankOffice(int bankId) {
-        Bank b = rep.banks.get();
-        BankOffice office = officeService.addNewOffice();
+    public Bank addNewBankOffice(int bankId, int officeId) {
+        Bank bank = this.get(bankId);
+        BankOffice office = officeService.getOffice(officeId);
 
-        b.officeNum++;
-        updateBank(b);
+        bank.officeNum++;
+        bank.offices.add(office);
 
-        return office;
+        return updateBank(bank);
     }
 
-    @Override
-    public Employee addEmployeeToBank(int bankId) {
-        Bank b = rep.banks.get();
-        Employee e = employeeService.addNewEmployee();
+    public Bank addEmployeeToBank(int bankId, int employeeId) {
+        Bank bank = this.get(bankId);
+        Employee empl = employeeService.getEmployee(employeeId);
 
-        e.bankId = bankId;
-        e.bank = b;
-        b.employeeNum++;
+        empl.bankId = bankId;
+        empl.bank = bank;
+        bank.employeeNum++;
+        bank.employees.add(empl);
 
-        updateBank(b);
-        return employeeService.updateEmployee(e);
+        employeeService.updateEmployee(empl);
+        return updateBank(bank);
     }
 
-    @Override
-    public User addBankUser(int bankId) {
-        Bank b = rep.banks.get();
-        User u = userService.addNewUser();
+    public Bank addBankUser(int bankId, int userId) {
+        Bank bank = this.get(bankId);
+        User user = userService.getUser(userId);
 
-        u.banks = b;
-        b.clientNum++;
+        user.banks.add(bank);
+        bank.clientNum++;
+        bank.users.add(user);
 
-        updateBank(b);
-        return userService.updateUser(u);
+        userService.updateUser(user);
+        return updateBank(bank);
     }
 }

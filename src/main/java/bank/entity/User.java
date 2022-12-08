@@ -1,10 +1,9 @@
 package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
+import helpers.CollectionPrinter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**Модель пользователя*/
 public class User extends BaseNameEntity {
@@ -14,26 +13,39 @@ public class User extends BaseNameEntity {
     public String workingPlace;
     /**Размер заработной платы*/
     public double salary;
-    /**Банки, которыми пользуется пользователь*/
-    public Bank banks;
-    /**Платежные счета*/
-    public PaymentAccount paymentAccounts;
-    /**Кредитные счета*/
-    public CreditAccount creditAccounts;
     /**Кредитный рейтинг*/
     public int creditRate;
+    /**Банки, которыми пользуется пользователь*/
+    public Collection<Bank> banks;
+    /**Платежные счета*/
+    public Collection<PaymentAccount> paymentAccounts;
+    /**Кредитные счета*/
+    public Collection<CreditAccount> creditAccounts;
 
-    @Override
+    public User() {
+        banks = new LinkedList<>();
+        paymentAccounts = new LinkedList<>();
+        creditAccounts = new LinkedList<>();
+    }
+
     public String toString() {
-        return String.format("User: id=%s;name=%s;birthday=%s;workingPlace=%s;salary=%s;banks=%s;" +
-                        "paymentAccounts=%s;creditAccounts=%s",
+        return String.format("""
+                        User: 
+                        \sid=%s;
+                        \sname=%s;
+                        \sbirthday=%s;
+                        \sworkingPlace=%s;
+                        \screditRate=%s,
+                        \ssalary=%s;
+                        \spaymentAccounts=%s;
+                        \screditAccounts=%s""",
                 id,
                 name,
                 birthday,
                 workingPlace,
+                creditRate,
                 salary,
-                banks,
-                paymentAccounts,
-                creditAccounts);
+                CollectionPrinter.collectionToString(paymentAccounts),
+                CollectionPrinter.collectionToString(creditAccounts));
     }
 }

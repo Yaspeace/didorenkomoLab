@@ -35,6 +35,5 @@ public class BankRepository {
         employees = new EntityPool<>();
         paymentAccounts = new EntityPool<>();
         users = new EntityPool<>();
-
     }
 }

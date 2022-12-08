@@ -6,11 +6,17 @@ import bank.service.BankService;
 import bank.service.EmployeeService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
+import helpers.Logger;
+
+import java.util.Collection;
 
 /**Сервис по работе с платежными счетами*/
 public class PaymentAccountServiceImpl implements PaymentAccountService {
     /**Репозиторий*/
     private final BankRepository rep;
+
+    /**Логгер**/
+    private final Logger logger;
 
     /**Сервис для работы с пользователями*/
     private final UserService userService;
@@ -21,45 +27,64 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     /**
      * Конструктор
      * @param rep Репозиторий
+     * @param logger Логгер
      * @param userService Сервис для работы с пользователями
      * @param bankService Сервис для работы с банками
      */
     public PaymentAccountServiceImpl(BankRepository rep,
+                                     Logger logger,
                                      UserService userService,
                                      BankService bankService) {
         this.rep = rep;
+        this.logger = logger;
         this.userService = userService;
         this.bankService = bankService;
     }
 
-    @Override
-    public PaymentAccount getPaymentAccount() {
+    public PaymentAccount getPaymentAccount(int id) {
+        return rep.paymentAccounts.get(id);
+    }
+
+    public Collection<PaymentAccount> getAll() {
         return rep.paymentAccounts.get();
     }
 
-    @Override
-    public PaymentAccount addNewPaymentAccount() {
-        return rep.paymentAccounts.update(new PaymentAccount());
+    public PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) {
+        try {
+            rep.paymentAccounts.add(paymentAcc);
+            return paymentAcc;
+        }
+        catch (Exception ex) {
+            logger.logError("Ошибка при добавлении платежного счета: " + ex.getMessage());
+            return null;
+        }
     }
 
-    @Override
     public PaymentAccount updatePaymentAccount(PaymentAccount model) {
-        return rep.paymentAccounts.update(model);
+        try {
+            return rep.paymentAccounts.update(model);
+        }
+        catch(Exception ex) {
+            logger.logError("Ошибка при изменении платежного счета: " + ex.getMessage());
+            return null;
+        }
     }
 
-    @Override
-    public PaymentAccount openPaymentAccount(int userId, int bankId) {
-        PaymentAccount p = addNewPaymentAccount();
-        User u = userService.getUser();
-        Bank b = bankService.getBank();
+    public PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) {
+        PaymentAccount pAcc = new PaymentAccount();
+        User user = userService.getUser(userId);
+        Bank bank = bankService.get(bankId);
 
-        p.userId = userId;
-        p.user = u;
-        p.bankName = b.name;
+        pAcc.userId = userId;
+        pAcc.user = user;
+        pAcc.bankName = bank.name;
+        pAcc.moneyAmount = initialSumm;
 
-        u.paymentAccounts = p;
-        userService.updateUser(u);
+        bank.paymentAccounts.add(pAcc);
+        user.paymentAccounts.add(pAcc);
 
-        return updatePaymentAccount(p);
+        userService.updateUser(user);
+
+        return this.addPaymentAccount(pAcc);
     }
 }
