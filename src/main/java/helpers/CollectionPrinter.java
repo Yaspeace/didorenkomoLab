@@ -3,7 +3,16 @@ package helpers;
 import java.util.Collection;
 import java.util.StringJoiner;
 
-public class CollectionPrinter <T> {
+/**
+ * Класс для вывода параметризованных коллекций
+ */
+public class CollectionPrinter {
+    /**
+     * Вывести содержимое коллекции в строку
+     * @param col Коллекция
+     * @return Строка
+     * @param <T> Базовый тип коллекции
+     */
     public static <T> String collectionToString(Collection<T> col) {
         if(col == null || col.size() == 0) return "[]";
 

@@ -41,12 +41,14 @@ public class Employee extends BaseNameEntity {
     /**Кредитные счета, выданные данным сотрудником**/
     public Collection<CreditAccount> creditAccounts;
 
+    /**
+     * Конструктор
+     */
     public Employee() {
         servingAtms = new LinkedList<>();
         creditAccounts = new LinkedList<>();
     }
 
-    @Override
     public String toString() {
         return String.format("Employee: id=%s;name=%s;birthday=%s;post=%s;bankId=%s;isDistantWorking=%s;officeId=%s;" +
                         "canGiveCredit=%s;salary=%s",

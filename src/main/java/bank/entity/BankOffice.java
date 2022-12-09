@@ -40,6 +40,9 @@ public class BankOffice extends BaseNameEntity {
     /**Банкоматы в офисе**/
     public Collection<BankAtm> atms;
 
+    /**
+     * Конструктор
+     */
     public BankOffice() {
         employees = new LinkedList<>();
         atms = new LinkedList<>();

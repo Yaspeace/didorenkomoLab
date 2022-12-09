@@ -1,5 +1,8 @@
 package helpers;
 
+/**
+ * Базовый интерфейс логера
+ */
 public interface Logger {
     /**
      * Логировать текст

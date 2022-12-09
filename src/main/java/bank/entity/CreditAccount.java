@@ -39,7 +39,6 @@ public class CreditAccount extends BaseEntity {
     /**Платежный счет*/
     public PaymentAccount paymentAccount;
 
-    @Override
     public String toString() {
         return String.format("Credit Account: id=%s;userId=%s;bankName=%s;dateBegin=%s;dateEnd=%s;months=%s;monthPayment=%s;" +
                         "percent=%s;employeeId=%s;paymentAccountId=%s",

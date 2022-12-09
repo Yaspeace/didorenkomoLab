@@ -1,5 +1,8 @@
 package helpers;
 
+/**
+ * Логер для консоли
+ */
 public class ConsoleLogger implements Logger {
     public void log(String message) {
         var time = java.time.LocalDateTime.now();

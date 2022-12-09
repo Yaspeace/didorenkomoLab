@@ -22,11 +22,13 @@ public class PaymentAccount extends BaseEntity {
     /**Кредитные счета, привязанные к данному счету**/
     public Collection<CreditAccount> creditAccounts;
 
+    /**
+     * Конструктор
+     */
     public PaymentAccount() {
         creditAccounts = new LinkedList<>();
     }
 
-    @Override
     public String toString() {
         return String.format("Payment Account: id=%s;userId=%s;bankName=%s;moneyAmount=%s",
                 id,

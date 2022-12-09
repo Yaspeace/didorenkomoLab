@@ -6,7 +6,6 @@ import helpers.CollectionPrinter;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.StringJoiner;
 
 /**Модель банка*/
 public class Bank extends BaseNameEntity {

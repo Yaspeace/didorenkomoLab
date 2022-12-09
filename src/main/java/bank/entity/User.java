@@ -22,8 +22,12 @@ public class User extends BaseNameEntity {
     /**Кредитные счета*/
     public Collection<CreditAccount> creditAccounts;
 
+    /**Рандомайзер**/
     private final Random rnd;
 
+    /**
+     * Конструктор
+     */
     public User() {
         banks = new LinkedList<>();
         paymentAccounts = new LinkedList<>();
