@@ -26,6 +26,8 @@ public class Main {
             "Сидоров И.И.",
             "Иванов А.И.",
             "Петров Д.Н.",
+            "Грачев В.В",
+            "Сидоренко И.О."
     };
 
     private static final Random rnd = new Random();
@@ -58,30 +60,35 @@ public class Main {
         bankService.addBank(bank);
         initBankAtms(bank);
         initOffices(bank);
+        initClients(bank);
 
         bank = new Bank();
         bank.name = "Сбарбанк";
         bankService.addBank(bank);
         initBankAtms(bank);
         initOffices(bank);
+        initClients(bank);
 
         bank = new Bank();
         bank.name = "Теньков";
         bankService.addBank(bank);
         initBankAtms(bank);
         initOffices(bank);
+        initClients(bank);
 
         bank = new Bank();
         bank.name = "Банк Расея";
         bankService.addBank(bank);
         initBankAtms(bank);
         initOffices(bank);
+        initClients(bank);
 
         bank = new Bank();
         bank.name = "МосГорГлавМинБанк";
         bankService.addBank(bank);
         initBankAtms(bank);
         initOffices(bank);
+        initClients(bank);
     }
 
     private static void initBankAtms(Bank bank) throws Exception {
@@ -107,7 +114,7 @@ public class Main {
         bankService.addAtmToBank(bank.id, atm.id);
     }
 
-    private static void initOffices(Bank bank) throws Exception {
+    private static void initOffices(Bank bank) {
         BankOffice office = new BankOffice();
         office.address = "г. Запупок, ул. Выхухольная, д.69а";
         office.rentPrice = 5000;
@@ -136,7 +143,7 @@ public class Main {
     private static void initEmployees(BankOffice office) {
         for(int i = 0; i < 5; i++) {
             Employee emp = new Employee();
-            emp.name = nameDict[rnd.nextInt(3)];
+            emp.name = nameDict[rnd.nextInt(nameDict.length)];
             emp.isDistantWorking = rnd.nextInt(10) > 5;
             emp.canGiveCredit = rnd.nextInt(10) > 5;
             employeeService.addEmployee(emp);
@@ -148,6 +155,41 @@ public class Main {
                     bankService.addEmployeeToBank(bank.id, emp.id);
                 }
             }
+        }
+    }
+
+    private static void initClients(Bank bank) throws Exception {
+        for(int i = 0; i < 5; i++) {
+            User user = new User();
+            user.name = nameDict[rnd.nextInt(nameDict.length)];
+            user.setSalary(rnd.nextDouble(100000));
+            user.birthday = new GregorianCalendar(1917, Calendar.FEBRUARY,1).getTime();
+            userService.addUser(user);
+            bankService.addBankUser(bank.id, user.id);
+            initPaymentAccounts(user, bank);
+            initCreditAccounts(user, bank);
+        }
+    }
+
+    private static void initPaymentAccounts(User user, Bank bank) {
+        for(int i = 0; i < 2; i++) {
+            payAccService.openPaymentAccount(user.id, bank.id, rnd.nextDouble(500));
+        }
+    }
+
+    private static void initCreditAccounts(User user, Bank bank) throws Exception {
+        Employee giver = null;
+        for(Employee empl : bank.employees) {
+            if(empl.canGiveCredit) {
+                giver = empl;
+                break;
+            }
+        }
+        if(giver == null) throw new Exception("У банка \"" + bank.name + "\" нет сотрудников, которые выдают кредиты");
+
+        for(PaymentAccount payAcc : user.paymentAccounts) {
+            credAccService.openCreditAccount(
+                    user.id, bank.id, giver.id, payAcc.id, rnd.nextDouble(10000), rnd.nextInt(12) + 1);
         }
     }
 }

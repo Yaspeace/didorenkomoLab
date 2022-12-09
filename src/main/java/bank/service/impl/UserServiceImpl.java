@@ -27,7 +27,8 @@ public class UserServiceImpl implements UserService {
 
     public User addUser(User user) {
         try {
-            return rep.users.update(new User());
+            rep.users.add(user);
+            return user;
         }
         catch(Exception ex) {
             logger.logError("Ошибка при добавлении пользователя: " + ex.getMessage());

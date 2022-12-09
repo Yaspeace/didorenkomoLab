@@ -12,7 +12,7 @@ public class User extends BaseNameEntity {
     /**Место работы*/
     public String workingPlace;
     /**Размер заработной платы*/
-    public double salary;
+    private double salary;
     /**Кредитный рейтинг*/
     public int creditRate;
     /**Банки, которыми пользуется пользователь*/
@@ -22,10 +22,33 @@ public class User extends BaseNameEntity {
     /**Кредитные счета*/
     public Collection<CreditAccount> creditAccounts;
 
+    private final Random rnd;
+
     public User() {
         banks = new LinkedList<>();
         paymentAccounts = new LinkedList<>();
         creditAccounts = new LinkedList<>();
+        rnd = new Random();
+    }
+
+    /**
+     * Установить зарплату (с пересчетом кредитного рейтинга)
+     * @param salary Зарплата
+     */
+    public void setSalary(double salary) {
+        int lowerBound = (int)salary / 10 - 100;
+        if(lowerBound < 0) lowerBound = 0;
+
+        this.creditRate = rnd.nextInt(lowerBound, lowerBound + 100);
+        this.salary = salary;
+    }
+
+    /**
+     * Получить зарплату
+     * @return Зарплата
+     */
+    public double getSalary() {
+        return salary;
     }
 
     public String toString() {
