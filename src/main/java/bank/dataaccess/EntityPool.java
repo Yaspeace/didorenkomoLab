@@ -1,6 +1,8 @@
 package bank.dataaccess;
 
 import bank.entity.base.BaseEntity;
+import exceptions.CrudOperationException;
+import exceptions.CrudOperations;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -46,10 +48,14 @@ public class EntityPool<Tentity extends BaseEntity> {
      * @param entity Добавляемая сущность
      */
     public void add(Tentity entity) throws Exception {
-        if(entityList.contains(entity)) throw new Exception("Коллекция уже содержит данный элемент");
+        if(entityList.contains(entity))
+            throw new CrudOperationException(
+                    "Коллекция уже содержит данный элемент", entity.getClass(), CrudOperations.Add);
         int maxId = 0;
         for(Tentity ent : entityList) {
-            if(ent.id == entity.id) throw new Exception("Ошибка уникальности ключа сущности");
+            if(ent.id == entity.id)
+                throw new CrudOperationException(
+                        "Ошибка уникальности ключа сущности", entity.getClass(), CrudOperations.Add);
             if(ent.id > maxId) maxId = ent.id;
         }
         entity.id = maxId + 1;
@@ -64,10 +70,12 @@ public class EntityPool<Tentity extends BaseEntity> {
     public Tentity update(Tentity entity) throws Exception {
         Tentity savedEntity = get(entity.id);
         if(savedEntity == null) {
-            throw new Exception("Не удалось найти сущность с идентификатором " + entity.id);
+            throw new CrudOperationException(
+                "Не удалось найти сущность с идентификатором " + entity.id, entity.getClass(), CrudOperations.Update);
         }
 
-        savedEntity = entity;
+        entityList.remove(savedEntity);
+        entityList.add(entity);
 
         return get(entity.id);
     }
@@ -76,12 +84,12 @@ public class EntityPool<Tentity extends BaseEntity> {
      * Удалить сущность с указанными идентификатором
      * @param id Идентификатор
      */
-    public void remove(int id)
-    {
+    public void remove(int id) {
         LinkedList<Tentity> toDelete = new LinkedList<>();
         for(Tentity e : entityList) {
             if(e.id == id) toDelete.add(e);
         }
+
         entityList.removeAll(toDelete);
     }
 

@@ -12,9 +12,6 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     /**Репозиторий*/
     private final BankRepository rep;
 
-    /**Логгер**/
-    private final Logger logger;
-
     /**Сервис для работы с пользователями*/
     private final UserService userService;
 
@@ -36,13 +33,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
      * @param paymentAccountService Сервис для работы с платежными счетами
      */
     public CreditAccountServiceImpl(BankRepository rep,
-                                    Logger logger,
                                     UserService userService,
                                     BankService bankService,
                                     EmployeeService employeeService,
                                     PaymentAccountService paymentAccountService) {
         this.rep = rep;
-        this.logger = logger;
         this.userService = userService;
         this.bankService = bankService;
         this.employeeService = employeeService;
@@ -57,25 +52,13 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return rep.creditAccounts.get();
     }
 
-    public CreditAccount addCreditAccount(CreditAccount creditAcc) {
-        try {
-            rep.creditAccounts.add(creditAcc);
-            return creditAcc;
-        }
-        catch (Exception ex) {
-            logger.logError("Ошибка добавления кредитного счета: " + ex.getMessage());
-            return null;
-        }
+    public CreditAccount addCreditAccount(CreditAccount creditAcc) throws Exception {
+        rep.creditAccounts.add(creditAcc);
+        return creditAcc;
     }
 
-    public CreditAccount updateCreditAccount(CreditAccount model) {
-        try {
-            return rep.creditAccounts.update(model);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка изменения кредитного счета: " + ex.getMessage());
-            return null;
-        }
+    public CreditAccount updateCreditAccount(CreditAccount model) throws Exception {
+        return rep.creditAccounts.update(model);
     }
 
     public CreditAccount openCreditAccount(int userId,
@@ -83,7 +66,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                                            int employeeId,
                                            int paymentAccountId,
                                            double monthPayment,
-                                           int months) {
+                                           int months) throws Exception {
         User user = userService.getUser(userId);
         Bank bank = bankService.get(bankId);
         Employee empl = employeeService.getEmployee(employeeId);

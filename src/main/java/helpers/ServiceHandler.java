@@ -26,16 +26,15 @@ public class ServiceHandler {
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      */
-    public ServiceHandler(BankRepository rep, Logger logger) {
-        atmService = new AtmServiceImpl(rep, logger);
-        employeeService = new EmployeeServiceImpl(rep, logger);
-        officeService = new BankOfficeServiceImpl(rep, logger, employeeService);
-        userService = new UserServiceImpl(rep, logger);
-        bankService = new BankServiceImpl(rep, logger, atmService, officeService, employeeService, userService);
-        payAccService = new PaymentAccountServiceImpl(rep, logger, userService, bankService);
-        credAccService = new CreditAccountServiceImpl(rep, logger, userService, bankService, employeeService, payAccService);
+    public ServiceHandler(BankRepository rep) {
+        atmService = new AtmServiceImpl(rep);
+        employeeService = new EmployeeServiceImpl(rep);
+        officeService = new BankOfficeServiceImpl(rep, employeeService);
+        userService = new UserServiceImpl(rep);
+        bankService = new BankServiceImpl(rep, atmService, officeService, employeeService, userService);
+        payAccService = new PaymentAccountServiceImpl(rep, userService, bankService);
+        credAccService = new CreditAccountServiceImpl(rep, userService, bankService, employeeService, payAccService);
     }
 
     /**Получить сервис для работы с банкоматами**/

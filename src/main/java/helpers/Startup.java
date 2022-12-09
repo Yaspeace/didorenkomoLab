@@ -107,7 +107,7 @@ public class Startup {
      * Инициализировать банковские офисы
      * @param bank Банк
      */
-    private void initOffices(Bank bank) {
+    private void initOffices(Bank bank) throws Exception {
         BankOffice office = new BankOffice();
         office.address = "г. Запупок, ул. Выхухольная, д.69а";
         office.rentPrice = 5000;
@@ -137,7 +137,7 @@ public class Startup {
      * Инициализировать сотрудников
      * @param office Офис
      */
-    private void initEmployees(BankOffice office) {
+    private void initEmployees(BankOffice office) throws Exception {
         for(int i = 0; i < 5; i++) {
             Employee emp = new Employee();
             emp.name = nameDict[rnd.nextInt(nameDict.length)];
@@ -178,7 +178,7 @@ public class Startup {
      * @param user Клиент
      * @param bank Банк
      */
-    private void initPaymentAccounts(User user, Bank bank) {
+    private void initPaymentAccounts(User user, Bank bank) throws Exception {
         for(int i = 0; i < 2; i++) {
             services.getPaymentAccountService().openPaymentAccount(user.id, bank.id, rnd.nextDouble(500));
         }

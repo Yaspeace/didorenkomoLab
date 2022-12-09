@@ -12,17 +12,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**Репозиторий*/
     private final BankRepository rep;
 
-    /**Логгер**/
-    private final Logger logger;
-
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      */
-    public EmployeeServiceImpl(BankRepository rep, Logger logger) {
+    public EmployeeServiceImpl(BankRepository rep) {
         this.rep = rep;
-        this.logger = logger;
     }
 
     public Employee getEmployee(int id) {
@@ -33,25 +28,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return rep.employees.get();
     }
 
-    public Employee addEmployee(Employee entity) {
-        try {
-            rep.employees.add(entity);
-            return entity;
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка добавления сотрудника: " + ex.getMessage());
-            return null;
-        }
+    public Employee addEmployee(Employee entity) throws Exception {
+        rep.employees.add(entity);
+        return entity;
     }
 
     @Override
-    public Employee updateEmployee(Employee model) {
-        try {
-            return rep.employees.update(model);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка изменения сотрудника: " + ex.getMessage());
-            return null;
-        }
+    public Employee updateEmployee(Employee model) throws Exception {
+        return rep.employees.update(model);
     }
 }

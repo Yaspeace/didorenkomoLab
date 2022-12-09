@@ -13,9 +13,6 @@ public class BankServiceImpl implements BankService {
     /**Репозиторий*/
     private final BankRepository rep;
 
-    /**Логгер**/
-    private final Logger logger;
-
     /**Сервис для работы с банкоматами*/
     private final AtmService atmService;
 
@@ -31,7 +28,6 @@ public class BankServiceImpl implements BankService {
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      * @param atmService Сервис для работы с банкоматами
      * @param officeService Сервис для работы с офисами
      * @param employeeService Сервис для работы с работниками
@@ -39,13 +35,11 @@ public class BankServiceImpl implements BankService {
      */
     public BankServiceImpl(
             BankRepository rep,
-            Logger logger,
             AtmService atmService,
             BankOfficeService officeService,
             EmployeeService employeeService,
             UserService userService) {
         this.rep = rep;
-        this.logger = logger;
         this.atmService = atmService;
         this.officeService = officeService;
         this.employeeService = employeeService;
@@ -60,25 +54,13 @@ public class BankServiceImpl implements BankService {
         return rep.banks.get();
     }
 
-    public Bank addBank(Bank bank) {
-        try {
-            rep.banks.add(bank);
-            return bank;
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка добавления банка: " + ex.getMessage());
-            return null;
-        }
+    public Bank addBank(Bank bank) throws Exception {
+        rep.banks.add(bank);
+        return bank;
     }
 
-    public Bank updateBank(Bank b) {
-        try {
-            return rep.banks.update(b);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка при изменении банка: " + ex.getMessage());
-            return null;
-        }
+    public Bank updateBank(Bank b) throws Exception {
+        return rep.banks.update(b);
     }
 
     public Bank addAtmToBank(int bankId, int atmId) throws Exception {
@@ -96,7 +78,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addNewBankOffice(int bankId, int officeId) {
+    public Bank addNewBankOffice(int bankId, int officeId) throws Exception {
         Bank bank = this.get(bankId);
         BankOffice office = officeService.getOffice(officeId);
 
@@ -106,7 +88,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addEmployeeToBank(int bankId, int employeeId) {
+    public Bank addEmployeeToBank(int bankId, int employeeId) throws Exception {
         Bank bank = this.get(bankId);
         Employee empl = employeeService.getEmployee(employeeId);
 
@@ -119,7 +101,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addBankUser(int bankId, int userId) {
+    public Bank addBankUser(int bankId, int userId) throws Exception {
         Bank bank = this.get(bankId);
         User user = userService.getUser(userId);
 

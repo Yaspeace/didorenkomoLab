@@ -18,12 +18,12 @@ public interface EmployeeService {
      * Добавить нового сотрудника
      * @return Модель нового сотрудника
      */
-    Employee addEmployee(Employee entity);
+    Employee addEmployee(Employee entity) throws Exception;
 
     /**
      * Изменить сотрудника
      * @param model Модель сотрудника для изменения
      * @return Измененная модель
      */
-    Employee updateEmployee(Employee model);
+    Employee updateEmployee(Employee model) throws Exception;
 }

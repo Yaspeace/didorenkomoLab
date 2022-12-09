@@ -15,18 +15,13 @@ public class AtmServiceImpl implements AtmService {
 
     /**Репозиторий*/
     private final BankRepository rep;
-    /**Логгер**/
-    private final Logger logger;
 
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      */
-    public AtmServiceImpl(BankRepository rep, Logger logger)
-    {
+    public AtmServiceImpl(BankRepository rep) {
         this.rep = rep;
-        this.logger = logger;
     }
 
     @Override
@@ -40,45 +35,26 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public BankAtm addAtm(BankAtm atm) {
-        try
-        {
-            rep.atms.add(atm);
-            return atm;
-        }
-        catch(Exception ex)
-        {
-            logger.logError("Произошла ошибка при добавлении нового банкомата");
-            return null;
-        }
-
+    public BankAtm addAtm(BankAtm atm) throws Exception {
+        rep.atms.add(atm);
+        return atm;
     }
 
     @Override
-    public BankAtm updateAtm(BankAtm model) {
-        try {
-            return rep.atms.update(model);
-        }
-        catch (Exception ex) {
-            logger.logError("Ошибка при изменении банкомата");
-            return null;
-        }
+    public BankAtm updateAtm(BankAtm model) throws Exception {
+        return rep.atms.update(model);
     }
 
     @Override
-    public void placeToOffice(BankAtm atm, BankOffice office) {
+    public void placeToOffice(BankAtm atm, BankOffice office) throws Exception {
         if(!office.canPlaceAtm) return;
-        try {
-            atm.placingOfficeId = office.id;
-            atm.placingOffice = office;
-            atm.address = office.address;
-            rep.atms.update(atm);
-            office.atmNum++;
-            rep.offices.update(office);
-        }
-        catch(Exception ex) {
-            logger.logError("Произошла ошибка при помещении банкомата в офис");
-        }
+
+        atm.placingOfficeId = office.id;
+        atm.placingOffice = office;
+        atm.address = office.address;
+        rep.atms.update(atm);
+        office.atmNum++;
+        rep.offices.update(office);
     }
 
     @Override

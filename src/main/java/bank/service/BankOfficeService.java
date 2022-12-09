@@ -24,14 +24,14 @@ public interface BankOfficeService {
      * @param office Модель офиса на добавление
      * @return Модель нового офиса
      *  **/
-    BankOffice addOffice(BankOffice office);
+    BankOffice addOffice(BankOffice office) throws Exception;
 
     /**
      * Изменить модель офиса
      * @param office Модель офиса для изменения
      * @return Измененная модель
      * **/
-    BankOffice updateBankOffice(BankOffice office);
+    BankOffice updateBankOffice(BankOffice office) throws Exception;
 
-    BankOffice addEmployeeToOffice(int officeId, int employeeId);
+    BankOffice addEmployeeToOffice(int officeId, int employeeId) throws Exception;
 }

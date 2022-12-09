@@ -13,34 +13,34 @@ public interface AtmService {
      * @param id Идентификатор банкомата
      * @return Модель банкомата
      * **/
-    public BankAtm getAtm(int id);
+    BankAtm getAtm(int id);
 
     /**
      * Получить все банкоматы
      * @return Список банкоматов
      */
-    public Collection<BankAtm> getAllAtms();
+    Collection<BankAtm> getAllAtms();
 
     /**
      * Добавить новый банкомат
      * @param atm Модель банкомата на добавление
      * @return Модель добавленного банкомата
      * **/
-    public BankAtm addAtm(BankAtm atm);
+    BankAtm addAtm(BankAtm atm) throws Exception;
 
     /**
      * Изменить модель банкомата
      * @param model Модель банкомата для изменения
      * @return Измененная модель
      * **/
-    public BankAtm updateAtm(BankAtm model);
+    BankAtm updateAtm(BankAtm model) throws Exception;
 
     /**
      * Поместить банкомат в офис
      * @param atm Банкомат
      * @param office Офис
      * **/
-    public void placeToOffice(BankAtm atm, BankOffice office) throws Exception;
+    void placeToOffice(BankAtm atm, BankOffice office) throws Exception;
 
     /**
      * Назначить обслуживающего сотрудника
@@ -48,7 +48,7 @@ public interface AtmService {
      * @param employee Обслуживающий сотрудник для назначения
      * @return Модель банкомата после назначения сотрудника
      * **/
-    public BankAtm setEmployee(int atmId, Employee employee) throws Exception;
+    BankAtm setEmployee(int atmId, Employee employee) throws Exception;
 
     /**
      * Получение денег у банкомата
@@ -56,7 +56,7 @@ public interface AtmService {
      * @param amount Количество денег к получению
      * @return Количество фактически полученных денег
      * **/
-    public double takeMoney(int atmId, double amount);
+    double takeMoney(int atmId, double amount);
 
     /**
      * Добавление денег в банкомат
@@ -64,5 +64,5 @@ public interface AtmService {
      * @param amount Количество денег к добавилению
      * @return Количество фактически добавленных денег
      * **/
-    public double depositMoney(int atmId, double amount);
+    double depositMoney(int atmId, double amount);
 }

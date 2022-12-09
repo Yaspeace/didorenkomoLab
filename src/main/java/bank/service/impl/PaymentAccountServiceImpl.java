@@ -14,9 +14,6 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     /**Репозиторий*/
     private final BankRepository rep;
 
-    /**Логгер**/
-    private final Logger logger;
-
     /**Сервис для работы с пользователями*/
     private final UserService userService;
 
@@ -26,16 +23,13 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      * @param userService Сервис для работы с пользователями
      * @param bankService Сервис для работы с банками
      */
     public PaymentAccountServiceImpl(BankRepository rep,
-                                     Logger logger,
                                      UserService userService,
                                      BankService bankService) {
         this.rep = rep;
-        this.logger = logger;
         this.userService = userService;
         this.bankService = bankService;
     }
@@ -48,28 +42,16 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return rep.paymentAccounts.get();
     }
 
-    public PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) {
-        try {
-            rep.paymentAccounts.add(paymentAcc);
-            return paymentAcc;
-        }
-        catch (Exception ex) {
-            logger.logError("Ошибка при добавлении платежного счета: " + ex.getMessage());
-            return null;
-        }
+    public PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws Exception {
+        rep.paymentAccounts.add(paymentAcc);
+        return paymentAcc;
     }
 
-    public PaymentAccount updatePaymentAccount(PaymentAccount model) {
-        try {
-            return rep.paymentAccounts.update(model);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка при изменении платежного счета: " + ex.getMessage());
-            return null;
-        }
+    public PaymentAccount updatePaymentAccount(PaymentAccount model) throws Exception {
+        return rep.paymentAccounts.update(model);
     }
 
-    public PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) {
+    public PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws Exception {
         PaymentAccount pAcc = new PaymentAccount();
         User user = userService.getUser(userId);
         Bank bank = bankService.get(bankId);

@@ -23,12 +23,12 @@ public interface UserService {
      * Добавить нового пользователя
      * @return Модель нового пользователя
      */
-    User addUser(User user);
+    User addUser(User user) throws Exception;
 
     /**
      * Изменить пользователя
      * @param model Модель пользователя для изменения
      * @return Измененная модель
      */
-    User updateUser(User model);
+    User updateUser(User model) throws Exception;
 }

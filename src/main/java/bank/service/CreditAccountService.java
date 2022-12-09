@@ -20,14 +20,14 @@ public interface CreditAccountService {
      * Добавить новый кредитный аккаунт
      * @return Модель нового кредитного счета
      */
-    CreditAccount addCreditAccount(CreditAccount creditAcc);
+    CreditAccount addCreditAccount(CreditAccount creditAcc) throws Exception;
 
     /**
      * Изменить кредитный счет
      * @param model Модель кредитного счета для изменения
      * @return Измененная модель
      */
-    CreditAccount updateCreditAccount(CreditAccount model);
+    CreditAccount updateCreditAccount(CreditAccount model) throws Exception;
 
     /**
      * Открыть кредитный счет
@@ -39,5 +39,5 @@ public interface CreditAccountService {
      * @param months Число месяцев действия кредитного счета
      * @return Открытый кредитный счет
      */
-    CreditAccount openCreditAccount(int userId, int bankId, int employeeId, int paymentAccountId, double monthPayment, int months);
+    CreditAccount openCreditAccount(int userId, int bankId, int employeeId, int paymentAccountId, double monthPayment, int months) throws Exception;
 }

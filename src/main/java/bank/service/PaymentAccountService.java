@@ -23,14 +23,14 @@ public interface PaymentAccountService {
      * Добавить платежный счет
      * @return Модель нового платежного счета
      */
-    PaymentAccount addPaymentAccount(PaymentAccount paymentAcc);
+    PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws Exception;
 
     /**
      * Изменить платежный счет
      * @param model Модель платежного счета для изменения
      * @return Измененная модель
      */
-    PaymentAccount updatePaymentAccount(PaymentAccount model);
+    PaymentAccount updatePaymentAccount(PaymentAccount model) throws Exception;
 
     /**
      * Открыть платежный счет
@@ -39,5 +39,5 @@ public interface PaymentAccountService {
      * @param initialSumm Начальная сумма на счете
      * @return Открытый платежный счет
      */
-    PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm);
+    PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws Exception;
 }

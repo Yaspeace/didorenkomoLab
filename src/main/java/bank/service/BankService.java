@@ -22,14 +22,14 @@ public interface BankService {
      * Добавить новый банк
      * @return Модель нового банка
      */
-    Bank addBank(Bank bank);
+    Bank addBank(Bank bank) throws Exception;
 
     /**
      * Изменить банк
      * @param bank Модель банка для изменения
      * @return Измененная модель
      */
-    Bank updateBank(Bank bank);
+    Bank updateBank(Bank bank) throws Exception;
 
     /**
      * Добавить банку банкомат
@@ -43,19 +43,19 @@ public interface BankService {
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addNewBankOffice(int bankId, int officeId);
+    Bank addNewBankOffice(int bankId, int officeId) throws Exception;
 
     /**
      * Добавить сотрудника банку
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addEmployeeToBank(int bankId, int employeeId);
+    Bank addEmployeeToBank(int bankId, int employeeId) throws Exception;
 
     /**
      * Добавить пользователя банка
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addBankUser(int bankId, int userId);
+    Bank addBankUser(int bankId, int userId) throws Exception;
 }

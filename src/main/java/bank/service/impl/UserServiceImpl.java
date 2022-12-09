@@ -10,11 +10,8 @@ import java.util.Collection;
 public class UserServiceImpl implements UserService {
     private final BankRepository rep;
 
-    private final Logger logger;
-
-    public UserServiceImpl(BankRepository rep, Logger logger) {
+    public UserServiceImpl(BankRepository rep) {
         this.rep = rep;
-        this.logger = logger;
     }
 
     public User getUser(int id) {
@@ -25,25 +22,13 @@ public class UserServiceImpl implements UserService {
         return rep.users.get();
     }
 
-    public User addUser(User user) {
-        try {
-            rep.users.add(user);
-            return user;
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка при добавлении пользователя: " + ex.getMessage());
-            return null;
-        }
+    public User addUser(User user) throws Exception {
+        rep.users.add(user);
+        return user;
     }
 
     @Override
-    public User updateUser(User model) {
-        try {
-            return rep.users.update(model);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка при изменении данных пользователя: " + ex.getMessage());
-            return null;
-        }
+    public User updateUser(User model) throws Exception {
+        return rep.users.update(model);
     }
 }

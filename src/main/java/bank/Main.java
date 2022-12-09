@@ -14,9 +14,13 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            ServiceHandler services = new ServiceHandler(rep, logger);
+            ServiceHandler services = new ServiceHandler(rep);
             Startup startup = new Startup(services);
             startup.initEntities();
+
+            // Тест исключений
+            /*User u = new User();
+            services.getUserService().updateUser(u);*/
 
             printBankMenu(services.getBankService().getALl());
 

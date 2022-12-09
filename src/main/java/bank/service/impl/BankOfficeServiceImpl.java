@@ -13,8 +13,6 @@ import java.util.Collection;
 public class BankOfficeServiceImpl implements BankOfficeService {
     /**Репозиторий*/
     private final BankRepository rep;
-    /**Логгер**/
-    private final Logger logger;
 
     /**Сервис для работы с сотрудниками**/
     private final EmployeeService employeeService;
@@ -22,11 +20,9 @@ public class BankOfficeServiceImpl implements BankOfficeService {
     /**
      * Конструктор
      * @param rep Репозиторий
-     * @param logger Логгер
      */
-    public BankOfficeServiceImpl(BankRepository rep, Logger logger, EmployeeService employeeService) {
+    public BankOfficeServiceImpl(BankRepository rep, EmployeeService employeeService) {
         this.rep = rep;
-        this.logger = logger;
         this.employeeService = employeeService;
     }
 
@@ -38,28 +34,16 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return rep.offices.get();
     }
 
-    public BankOffice addOffice(BankOffice office) {
-        try {
-            rep.offices.add(office);
-            return office;
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка добавления офиса: " + ex.getMessage());
-            return null;
-        }
+    public BankOffice addOffice(BankOffice office) throws Exception {
+        rep.offices.add(office);
+        return office;
     }
 
-    public BankOffice updateBankOffice(BankOffice office) {
-        try {
-            return rep.offices.update(office);
-        }
-        catch(Exception ex) {
-            logger.logError("Ошибка изменения офиса: " + ex.getMessage());
-            return null;
-        }
+    public BankOffice updateBankOffice(BankOffice office) throws Exception {
+        return rep.offices.update(office);
     }
 
-    public BankOffice addEmployeeToOffice(int officeId, int employeeId) {
+    public BankOffice addEmployeeToOffice(int officeId, int employeeId) throws Exception {
         BankOffice office = this.getOffice(officeId);
         Employee empl = employeeService.getEmployee(employeeId);
 
