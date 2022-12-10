@@ -3,6 +3,7 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.Employee;
 import bank.service.EmployeeService;
+import exceptions.NotFoundException;
 import helpers.Logger;
 
 import java.util.Collection;
@@ -20,8 +21,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.rep = rep;
     }
 
-    public Employee getEmployee(int id) {
-        return rep.employees.get(id);
+    public Employee getEmployee(int id) throws NotFoundException {
+        Employee res = rep.employees.get(id);
+        if(res == null) throw new NotFoundException(id, Employee.class);
+        return res;
     }
 
     public Collection<Employee> getAll() {

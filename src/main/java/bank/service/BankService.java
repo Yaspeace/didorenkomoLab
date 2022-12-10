@@ -1,6 +1,8 @@
 package bank.service;
 
 import bank.entity.*;
+import bank.entity.base.BaseEntity;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -10,13 +12,14 @@ public interface BankService {
      * Получить банк
      * @return Модель банка
      */
-    Bank get(int id);
+    Bank get(int id) throws NotFoundException;
 
     /**
      * Получить все банки
+     *
      * @return Коллекция банков
      */
-    Collection<Bank> getALl();
+    Collection<Bank> getAll();
 
     /**
      * Добавить новый банк

@@ -42,35 +42,30 @@ public class Startup {
         Bank bank = new Bank();
         bank.name = "ФТБ";
         services.getBankService().addBank(bank);
-        initBankAtms(bank);
         initOffices(bank);
         initClients(bank);
 
         bank = new Bank();
         bank.name = "Сбарбанк";
         services.getBankService().addBank(bank);
-        initBankAtms(bank);
         initOffices(bank);
         initClients(bank);
 
         bank = new Bank();
         bank.name = "Теньков";
         services.getBankService().addBank(bank);
-        initBankAtms(bank);
         initOffices(bank);
         initClients(bank);
 
         bank = new Bank();
         bank.name = "Банк Расея";
         services.getBankService().addBank(bank);
-        initBankAtms(bank);
         initOffices(bank);
         initClients(bank);
 
         bank = new Bank();
         bank.name = "МосГорГлавМинБанк";
         services.getBankService().addBank(bank);
-        initBankAtms(bank);
         initOffices(bank);
         initClients(bank);
     }
@@ -80,27 +75,33 @@ public class Startup {
      * @param bank Банк
      * @throws Exception Ошибка инициализации
      */
-    private void initBankAtms(Bank bank) throws Exception {
+    private void initBankAtms(Bank bank, BankOffice office) throws Exception {
         BankAtm atm = new BankAtm();
-        atm.name = bank.name + " банкомат № 1";
+        atm.name = bank.name + office.address + " банкомат № 1";
         atm.isGivesMoney = true;
         atm.isTakesMoney = true;
+        atm.setMoneyAmount(100000);
         services.getAtmService().addAtm(atm);
         services.getBankService().addAtmToBank(bank.id, atm.id);
+        services.getAtmService().placeToOffice(atm, office);
 
         atm = new BankAtm();
-        atm.name = bank.name + " банкомат № 2";
+        atm.name = bank.name + office.address + " банкомат № 2";
         atm.isGivesMoney = false;
         atm.isTakesMoney = true;
+        atm.setMoneyAmount(100000);
         services.getAtmService().addAtm(atm);
         services.getBankService().addAtmToBank(bank.id, atm.id);
+        services.getAtmService().placeToOffice(atm, office);
 
         atm = new BankAtm();
-        atm.name = bank.name + " банкомат № 3";
+        atm.name = bank.name + office.address + " банкомат № 3";
         atm.isGivesMoney = true;
         atm.isTakesMoney = false;
+        atm.setMoneyAmount(100000);
         services.getAtmService().addAtm(atm);
         services.getBankService().addAtmToBank(bank.id, atm.id);
+        services.getAtmService().placeToOffice(atm, office);
     }
 
     /**
@@ -112,25 +113,37 @@ public class Startup {
         office.address = "г. Запупок, ул. Выхухольная, д.69а";
         office.rentPrice = 5000;
         office.canPlaceAtm = true;
+        office.isWorking = true;
+        office.isCrediting = true;
+        office.moneyAmount = 100000;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
+        initBankAtms(bank, office);
 
         office = new BankOffice();
         office.address = "г. Мытищчи, ул. Спортивная, д.25";
         office.rentPrice = 5000;
         office.canPlaceAtm = false;
+        office.isWorking = true;
+        office.isCrediting = true;
+        office.moneyAmount = 100000;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
+        initBankAtms(bank, office);
 
         office = new BankOffice();
         office.address = "г. Белгород, ул. Корочанская, д.1024";
         office.rentPrice = 4000;
         office.canPlaceAtm = true;
+        office.isWorking = true;
+        office.isCrediting = true;
+        office.moneyAmount = 100000;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
+        initBankAtms(bank, office);
     }
 
     /**
@@ -146,7 +159,7 @@ public class Startup {
             services.getEmployeeService().addEmployee(emp);
             services.getOfficeService().addEmployeeToOffice(office.id, emp.id);
 
-            Collection<Bank> banks = services.getBankService().getALl();
+            Collection<Bank> banks = services.getBankService().getAll();
             for(Bank bank : banks) {
                 if(bank.offices.contains(office)) {
                     services.getBankService().addEmployeeToBank(bank.id, emp.id);

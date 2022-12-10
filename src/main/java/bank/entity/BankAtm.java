@@ -2,6 +2,8 @@ package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
 import bank.entity.enums.AtmStatuses;
+import exceptions.BankTransactionException;
+import exceptions.BankTransactions;
 
 /**Модель банкомата*/
 public class BankAtm extends BaseNameEntity {
@@ -63,6 +65,18 @@ public class BankAtm extends BaseNameEntity {
                 status = AtmStatuses.noMoney;
             }
         }
+    }
+
+    public String toShortString() {
+        return String.format("id=%s; name=%s; address=%s; status=%s; isGivesMoney=%s; " +
+                "isTakesMoney=%s; moneyAmount=%s",
+                id,
+                name,
+                address,
+                status,
+                isGivesMoney,
+                isTakesMoney,
+                moneyAmount);
     }
 
     @Override

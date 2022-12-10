@@ -1,6 +1,7 @@
 package bank.service;
 
 import bank.entity.BankOffice;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ public interface BankOfficeService {
      * @param id Идентификатор офиса
      * @return Модель офиса
      * **/
-    BankOffice getOffice(int id);
+    BankOffice getOffice(int id) throws NotFoundException;
 
     /**
      * Получить все банковские офисы

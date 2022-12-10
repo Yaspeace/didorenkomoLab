@@ -6,6 +6,9 @@ import bank.entity.BankOffice;
 import bank.entity.Employee;
 import bank.entity.enums.AtmStatuses;
 import bank.service.AtmService;
+import exceptions.CrudOperationException;
+import exceptions.NotFoundException;
+import exceptions.ObjectAccessException;
 import helpers.Logger;
 
 import java.util.Collection;
@@ -25,8 +28,10 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public BankAtm getAtm(int id) {
-        return rep.atms.get(id);
+    public BankAtm getAtm(int id) throws NotFoundException {
+        BankAtm res = rep.atms.get(id);
+        if (res == null) throw new NotFoundException(id, BankAtm.class);
+        return res;
     }
 
     @Override
@@ -52,8 +57,10 @@ public class AtmServiceImpl implements AtmService {
         atm.placingOfficeId = office.id;
         atm.placingOffice = office;
         atm.address = office.address;
+
         rep.atms.update(atm);
         office.atmNum++;
+        office.atms.add(atm);
         rep.offices.update(office);
     }
 
@@ -66,12 +73,15 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public double takeMoney(int atmId, double amount) {
+    public double takeMoney(int atmId, double amount) throws Exception {
         BankAtm atm = rep.atms.get(atmId);
-        double res = 0;
+        if(!atm.isGivesMoney)
+            throw new ObjectAccessException(atm.name, "не работает на выдачу");
         if(atm.status == AtmStatuses.noMoney || atm.status == AtmStatuses.notWorking)
-            return res;
-        res = Math.min(amount, atm.getMoneyAmount());
+            throw new ObjectAccessException(atm.name, "находится в не рабочем состоянии");
+        if(atm.getMoneyAmount() < amount)
+            throw new Exception("Сумма в банкомате (" + atm.getMoneyAmount() + ") меньше запрашиваемой (" + amount + ")");
+        double res = Math.min(amount, atm.getMoneyAmount());
         atm.setMoneyAmount(atm.getMoneyAmount() - amount);
         atm.bank.setTotalMoneyAmount(atm.bank.getTotalMoneyAmount() - amount);
         return res;

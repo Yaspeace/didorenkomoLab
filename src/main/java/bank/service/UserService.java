@@ -1,6 +1,7 @@
 package bank.service;
 
 import bank.entity.User;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ public interface UserService {
      * @param id Идентификатор пользователя
      * @return Модель пользователя
      */
-    User getUser(int id);
+    User getUser(int id) throws NotFoundException;
 
     /**
      * Получить всех пользователей

@@ -1,6 +1,7 @@
 package bank.service;
 
 import bank.entity.Employee;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -10,7 +11,7 @@ public interface EmployeeService {
      * Получить сотрудника
      * @return Модель сотрудника
      */
-    Employee getEmployee(int id);
+    Employee getEmployee(int id) throws NotFoundException;
 
     Collection<Employee> getAll();
 

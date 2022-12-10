@@ -10,4 +10,9 @@ public class BaseEntity {
     {
         id = 0;
     }
+
+    /**Вывод краткой информации о сущности**/
+    public String toShortString() {
+        return "id=" + id;
+    }
 }

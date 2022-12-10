@@ -3,6 +3,8 @@ package bank.service;
 import bank.entity.BankAtm;
 import bank.entity.BankOffice;
 import bank.entity.Employee;
+import exceptions.CrudOperationException;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -13,7 +15,7 @@ public interface AtmService {
      * @param id Идентификатор банкомата
      * @return Модель банкомата
      * **/
-    BankAtm getAtm(int id);
+    BankAtm getAtm(int id) throws NotFoundException;
 
     /**
      * Получить все банкоматы
@@ -56,7 +58,7 @@ public interface AtmService {
      * @param amount Количество денег к получению
      * @return Количество фактически полученных денег
      * **/
-    double takeMoney(int atmId, double amount);
+    double takeMoney(int atmId, double amount) throws Exception;
 
     /**
      * Добавление денег в банкомат

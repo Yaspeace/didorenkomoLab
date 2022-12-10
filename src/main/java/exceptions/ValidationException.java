@@ -1,19 +1,28 @@
 package exceptions;
 
+/**Исключение валидации объекта**/
 public class ValidationException extends Exception {
 
+    /**Имя поля, не прошедшего валидацию**/
     private final String fieldName;
-
+    /**Значение поля, которое не прошло валидацию**/
     private final Object value;
 
-    public ValidationException(String message, String fieldName, Object value) {
-        super(message);
+    /**
+     * Конструктор
+     * @param objectName Название объекта, не прошедшего валидацию
+     * @param fieldName Название поля, не прошедшего валидацию
+     * @param value Значение поля, не прошедшего валидацию
+     */
+    public ValidationException(String objectName, String fieldName, Object value) {
+        super(objectName);
         this.fieldName = fieldName;
         this.value = value;
     }
 
     @Override
     public String getMessage() {
-        return super.getMessage() + ". Поле " + fieldName + " имело значение " + value.toString() + ".";
+        return "Ошибка валидации " + super.getMessage() + ". Поле "
+                + fieldName + " имело значение " + value.toString() + ".";
     }
 }

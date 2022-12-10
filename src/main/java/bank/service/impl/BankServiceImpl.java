@@ -2,8 +2,9 @@ package bank.service.impl;
 
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
+import bank.entity.base.BaseEntity;
 import bank.service.*;
-import helpers.Logger;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -46,11 +47,13 @@ public class BankServiceImpl implements BankService {
         this.userService = userService;
     }
 
-    public Bank get(int id) {
-        return rep.banks.get(id);
+    public Bank get(int id) throws NotFoundException {
+        Bank res = rep.banks.get(id);
+        if(res == null) throw new NotFoundException(id, Bank.class);
+        return res;
     }
 
-    public Collection<Bank> getALl() {
+    public Collection<Bank> getAll() {
         return rep.banks.get();
     }
 

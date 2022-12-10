@@ -5,6 +5,8 @@ import bank.entity.BankOffice;
 import bank.entity.Employee;
 import bank.service.BankOfficeService;
 import bank.service.EmployeeService;
+import exceptions.CrudOperationException;
+import exceptions.NotFoundException;
 import helpers.Logger;
 
 import java.util.Collection;
@@ -26,8 +28,10 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         this.employeeService = employeeService;
     }
 
-    public BankOffice getOffice(int id) {
-        return rep.offices.get(id);
+    public BankOffice getOffice(int id) throws NotFoundException {
+        BankOffice res = rep.offices.get(id);
+        if(res == null) throw new NotFoundException(id, BankOffice.class);
+        return res;
     }
 
     public Collection<BankOffice> getAllOffices() {

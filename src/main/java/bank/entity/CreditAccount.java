@@ -39,6 +39,17 @@ public class CreditAccount extends BaseEntity {
     /**Платежный счет*/
     public PaymentAccount paymentAccount;
 
+    public String toShortString() {
+        return String.format("id=%s; bankName=%s; dateBegin=%s; dateEnd=%s; months=%s; monthPayment=%s; percent=%s;",
+                id,
+                bankName,
+                dateBegin,
+                dateEnd,
+                months,
+                monthPayment,
+                percent);
+    }
+
     public String toString() {
         return String.format("Credit Account: id=%s;userId=%s;bankName=%s;dateBegin=%s;dateEnd=%s;months=%s;monthPayment=%s;" +
                         "percent=%s;employeeId=%s;paymentAccountId=%s",

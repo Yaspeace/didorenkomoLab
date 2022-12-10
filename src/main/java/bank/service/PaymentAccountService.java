@@ -1,6 +1,7 @@
 package bank.service;
 
 import bank.entity.PaymentAccount;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -11,7 +12,7 @@ public interface PaymentAccountService {
      * @param id Идентификатор платежного счета
      * @return Модель платежного счета
      */
-    PaymentAccount getPaymentAccount(int id);
+    PaymentAccount getPaymentAccount(int id) throws NotFoundException;
 
     /**
      * Получить все платежные счета

@@ -5,6 +5,7 @@ import bank.entity.*;
 import bank.service.BankService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
+import exceptions.NotFoundException;
 import helpers.Logger;
 
 import java.util.Collection;
@@ -34,8 +35,10 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         this.bankService = bankService;
     }
 
-    public PaymentAccount getPaymentAccount(int id) {
-        return rep.paymentAccounts.get(id);
+    public PaymentAccount getPaymentAccount(int id) throws NotFoundException {
+        PaymentAccount res = rep.paymentAccounts.get(id);
+        if(res == null) throw new NotFoundException(id, PaymentAccount.class);
+        return res;
     }
 
     public Collection<PaymentAccount> getAll() {
@@ -58,6 +61,7 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
 
         pAcc.userId = userId;
         pAcc.user = user;
+        pAcc.bankId = bankId;
         pAcc.bankName = bank.name;
         pAcc.moneyAmount = initialSumm;
 

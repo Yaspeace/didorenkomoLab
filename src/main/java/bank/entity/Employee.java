@@ -49,6 +49,16 @@ public class Employee extends BaseNameEntity {
         creditAccounts = new LinkedList<>();
     }
 
+    public String toShortString() {
+        return String.format("id=%s;name=%s;birthday=%s;post=%s;isDistantWorking=%s;canGiveCredit=%s;",
+                id,
+                name,
+                birthday,
+                post,
+                isDistantWorking,
+                canGiveCredit);
+    }
+
     public String toString() {
         return String.format("Employee: id=%s;name=%s;birthday=%s;post=%s;bankId=%s;isDistantWorking=%s;officeId=%s;" +
                         "canGiveCredit=%s;salary=%s",

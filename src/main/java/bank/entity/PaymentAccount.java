@@ -13,6 +13,9 @@ public class PaymentAccount extends BaseEntity {
     /**Пользователь*/
     public User user;
 
+    /**Идентификатор банка**/
+    public int bankId;
+
     /**Название банка*/
     public String bankName;
 
@@ -29,11 +32,16 @@ public class PaymentAccount extends BaseEntity {
         creditAccounts = new LinkedList<>();
     }
 
+    public String toShortString() {
+        return String.format("id=%s; bankName=%s; moneyAmount=%s", id, bankName, moneyAmount);
+    }
+
     public String toString() {
-        return String.format("Payment Account: id=%s;userId=%s;bankName=%s;moneyAmount=%s",
+        return String.format("Payment Account: id=%s;userId=%s;bankName=%s;moneyAmount=%s;bankId=%s",
                 id,
                 userId,
                 bankName,
-                moneyAmount);
+                moneyAmount,
+                bankId);
     }
 }

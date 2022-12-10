@@ -1,7 +1,7 @@
 package bank.entity.base;
 
 /**Базовый класс сущности с наименованием и идентификатором*/
-public class BaseNameEntity extends BaseEntity{
+public class BaseNameEntity extends BaseEntity {
     /**Наименование*/
     public String name;
 
@@ -10,5 +10,9 @@ public class BaseNameEntity extends BaseEntity{
     {
         super();
         name = "";
+    }
+
+    public String toShortString() {
+        return "id=" + id + "; name=" + name;
     }
 }

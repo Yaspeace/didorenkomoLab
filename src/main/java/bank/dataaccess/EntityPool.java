@@ -4,6 +4,7 @@ import bank.entity.base.BaseEntity;
 import exceptions.CrudOperationException;
 import exceptions.CrudOperations;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -47,7 +48,7 @@ public class EntityPool<Tentity extends BaseEntity> {
      * Добавить сущность в коллекцию
      * @param entity Добавляемая сущность
      */
-    public void add(Tentity entity) throws Exception {
+    public void add(Tentity entity) throws CrudOperationException {
         if(entityList.contains(entity))
             throw new CrudOperationException(
                     "Коллекция уже содержит данный элемент", entity.getClass(), CrudOperations.Add);
@@ -67,7 +68,7 @@ public class EntityPool<Tentity extends BaseEntity> {
      * @param entity Сущность для изменения
      * @return Измененная сущность
      */
-    public Tentity update(Tentity entity) throws Exception {
+    public Tentity update(Tentity entity) throws CrudOperationException {
         Tentity savedEntity = get(entity.id);
         if(savedEntity == null) {
             throw new CrudOperationException(
@@ -84,20 +85,30 @@ public class EntityPool<Tentity extends BaseEntity> {
      * Удалить сущность с указанными идентификатором
      * @param id Идентификатор
      */
-    public void remove(int id) {
-        LinkedList<Tentity> toDelete = new LinkedList<>();
+    public void remove(int id) throws CrudOperationException {
+        if(entityList.size() < 1)
+            throw new CrudOperationException("Коллекция пуста", "", CrudOperations.Delete);
+
         for(Tentity e : entityList) {
-            if(e.id == id) toDelete.add(e);
+            if(e.id == id) {
+                entityList.remove(e);
+                return;
+            }
         }
 
-        entityList.removeAll(toDelete);
+        throw new CrudOperationException("Отсутствует объект с id=" + id, "", CrudOperations.Delete);
     }
 
     /**
      * Удалить указанную сущность
      * @param entity Сущность
      */
-    public void remove(Tentity entity) {
-        entityList.remove(entity);
+    public void remove(Tentity entity) throws CrudOperationException {
+        try {
+            entityList.remove(entity);
+        } catch (Exception ex) {
+            throw new CrudOperationException("Ошибка удаления объекта: " + ex.getMessage(), "", CrudOperations.Delete);
+        }
+
     }
 }

@@ -55,9 +55,19 @@ public class User extends BaseNameEntity {
         return salary;
     }
 
+    public String toShortString() {
+        return String.format("id=%s; name=%s; birthday=%s; workingPlase=%s; creditRate=%s; salary=%s;",
+                id,
+                name,
+                birthday,
+                workingPlace,
+                creditRate,
+                salary);
+    }
+
     public String toString() {
         return String.format("""
-                        User: 
+                        User:
                         \sid=%s;
                         \sname=%s;
                         \sbirthday=%s;

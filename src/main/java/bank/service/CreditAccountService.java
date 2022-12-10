@@ -1,6 +1,7 @@
 package bank.service;
 
 import bank.entity.CreditAccount;
+import exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -12,7 +13,7 @@ public interface CreditAccountService {
      * @param id Идентификатор платежного счета
      * @return Модель кредитного счета
      */
-    CreditAccount getCreditAccount(int id);
+    CreditAccount getCreditAccount(int id) throws NotFoundException;
 
     Collection<CreditAccount> getAll();
 

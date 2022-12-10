@@ -48,6 +48,21 @@ public class BankOffice extends BaseNameEntity {
         atms = new LinkedList<>();
     }
 
+    public String toShortString() {
+        return String.format("id=%s; name=%s; address=%s; isWorking=%s; canPlaceAtm=%s;" +
+                "atmNum=%s; isCrediting=%s; isGivesMoney=%s; isTakesMoney=%s; moneyAmount=%s;",
+                id,
+                name,
+                address,
+                isWorking,
+                canPlaceAtm,
+                atmNum,
+                isCrediting,
+                isGivesMoney,
+                isTakesMoney,
+                moneyAmount);
+    }
+
     @Override
     public String toString() {
         return String.format("BankOffice: id=%s;name=%s;address=%s;isWorking=%s;canPlaceAtm=%s;atmNum=%s;isCrediting=%s;" +

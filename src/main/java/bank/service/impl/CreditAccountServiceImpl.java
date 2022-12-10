@@ -3,9 +3,12 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
 import bank.service.*;
+import exceptions.NotFoundException;
 import helpers.Logger;
 
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 
 /**Сервис по работе с кредитными счетами*/
 public class CreditAccountServiceImpl implements CreditAccountService {
@@ -44,8 +47,10 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         this.paymentAccountService = paymentAccountService;
     }
 
-    public CreditAccount getCreditAccount(int id) {
-        return rep.creditAccounts.get(id);
+    public CreditAccount getCreditAccount(int id) throws NotFoundException {
+        CreditAccount res = rep.creditAccounts.get(id);
+        if(res == null) throw new NotFoundException(id, CreditAccount.class);
+        return res;
     }
 
     public Collection<CreditAccount> getAll() {
@@ -83,6 +88,11 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         credAcc.paymentAccount = payAcc;
         credAcc.months = months;
         credAcc.monthPayment = monthPayment;
+
+        Calendar calendar = new GregorianCalendar();
+        credAcc.dateBegin = calendar.getTime();
+        calendar.add(Calendar.MONTH, 12);
+        credAcc.dateEnd = calendar.getTime();
 
         user.creditAccounts.add(credAcc);
         empl.creditAccounts.add(credAcc);

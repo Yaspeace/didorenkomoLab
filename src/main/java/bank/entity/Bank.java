@@ -46,7 +46,7 @@ public class Bank extends BaseNameEntity {
     private double totalMoneyAmount;
 
     /**
-     * Устуновить количетсов денег банка
+     * Установить количетсов денег банка
      * @param value Количество денег
      */
     public void setTotalMoneyAmount(double value)
@@ -75,18 +75,32 @@ public class Bank extends BaseNameEntity {
         paymentAccounts = new LinkedList<>();
     }
 
+    public String toShortString() {
+        return String.format("id=%s; name=%s; officeNum=%s; atmNum=%s; " +
+                "employeeNum=%s; clientNum=%s; rate=%s; percent=%s; totalMoneyAmount=%s;",
+                id,
+                name,
+                officeNum,
+                atmNum,
+                employeeNum,
+                clientNum,
+                rate,
+                percent,
+                totalMoneyAmount);
+    }
+
     public String toString() {
         return String.format("""
                         Bank:
                         \sid=%s;
                         \sname=%s;
-                        \sofficeNum=%s; 
+                        \sofficeNum=%s;
                         \satmNum=%s;
                         \semployeeNum=%s;
                         \sclientNum=%s;
                         \srate=%s;
                         \spercent=%s;
-                        \stotalMoneyAmount=%s; 
+                        \stotalMoneyAmount=%s;
                         \satms=%s;
                         \soffices=%s;
                         \susers=%s;
