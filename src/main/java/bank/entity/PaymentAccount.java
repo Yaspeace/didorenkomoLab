@@ -33,11 +33,11 @@ public class PaymentAccount extends BaseEntity {
     }
 
     public String toShortString() {
-        return String.format("id=%s; bankName=%s; moneyAmount=%s", id, bankName, moneyAmount);
+        return String.format("id=%s; bankName=%s; moneyAmount=%.2f", id, bankName, moneyAmount);
     }
 
     public String toString() {
-        return String.format("Payment Account: id=%s;userId=%s;bankName=%s;moneyAmount=%s;bankId=%s",
+        return String.format("Payment Account: id=%s;userId=%s;bankName=%s;moneyAmount=%.2f;bankId=%s",
                 id,
                 userId,
                 bankName,

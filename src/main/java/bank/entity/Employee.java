@@ -2,6 +2,10 @@ package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -50,10 +54,10 @@ public class Employee extends BaseNameEntity {
     }
 
     public String toShortString() {
-        return String.format("id=%s;name=%s;birthday=%s;post=%s;isDistantWorking=%s;canGiveCredit=%s;",
+        return String.format("id=%s; name=%s; birthday=%s; post=%s; isDistantWorking=%s; canGiveCredit=%s;",
                 id,
                 name,
-                birthday,
+                new SimpleDateFormat("dd.MM.yyyy").format(birthday),
                 post,
                 isDistantWorking,
                 canGiveCredit);
@@ -61,10 +65,10 @@ public class Employee extends BaseNameEntity {
 
     public String toString() {
         return String.format("Employee: id=%s;name=%s;birthday=%s;post=%s;bankId=%s;isDistantWorking=%s;officeId=%s;" +
-                        "canGiveCredit=%s;salary=%s",
+                        "canGiveCredit=%s;salary=%.2f",
                 id,
                 name,
-                birthday,
+                new SimpleDateFormat("dd.MM.yyyy").format(birthday),
                 post,
                 bankId,
                 isDistantWorking,

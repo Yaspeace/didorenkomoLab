@@ -2,6 +2,7 @@ package bank.entity;
 
 import bank.entity.base.BaseEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**Модель кредитного счета*/
@@ -40,24 +41,24 @@ public class CreditAccount extends BaseEntity {
     public PaymentAccount paymentAccount;
 
     public String toShortString() {
-        return String.format("id=%s; bankName=%s; dateBegin=%s; dateEnd=%s; months=%s; monthPayment=%s; percent=%s;",
+        return String.format("id=%s; bankName=%s; dateBegin=%s; dateEnd=%s; months=%s; monthPayment=%.2f; percent=%.3f;",
                 id,
                 bankName,
-                dateBegin,
-                dateEnd,
+                new SimpleDateFormat("dd.MM.yyyy").format(dateBegin),
+                new SimpleDateFormat("dd.MM.yyyy").format(dateEnd),
                 months,
                 monthPayment,
                 percent);
     }
 
     public String toString() {
-        return String.format("Credit Account: id=%s;userId=%s;bankName=%s;dateBegin=%s;dateEnd=%s;months=%s;monthPayment=%s;" +
-                        "percent=%s;employeeId=%s;paymentAccountId=%s",
+        return String.format("Credit Account: id=%s;userId=%s;bankName=%s;dateBegin=%s;dateEnd=%s;months=%s;monthPayment=%.2f;" +
+                        "percent=%.3f;employeeId=%s;paymentAccountId=%s",
                 id,
                 userId,
                 bankName,
-                dateBegin,
-                dateEnd,
+                new SimpleDateFormat("dd.MM.yyyy").format(dateBegin),
+                new SimpleDateFormat("dd.MM.yyyy").format(dateEnd),
                 months,
                 monthPayment,
                 percent,

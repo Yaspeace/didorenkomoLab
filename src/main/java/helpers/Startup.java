@@ -115,7 +115,8 @@ public class Startup {
         office.canPlaceAtm = true;
         office.isWorking = true;
         office.isCrediting = true;
-        office.moneyAmount = 100000;
+        office.isGivesMoney = true;
+        office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
@@ -127,7 +128,8 @@ public class Startup {
         office.canPlaceAtm = false;
         office.isWorking = true;
         office.isCrediting = true;
-        office.moneyAmount = 100000;
+        office.isGivesMoney = true;
+        office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
@@ -139,7 +141,8 @@ public class Startup {
         office.canPlaceAtm = true;
         office.isWorking = true;
         office.isCrediting = true;
-        office.moneyAmount = 100000;
+        office.isGivesMoney = true;
+        office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);
         services.getBankService().addNewBankOffice(bank.id, office.id);
         initEmployees(office);
@@ -156,6 +159,8 @@ public class Startup {
             emp.name = nameDict[rnd.nextInt(nameDict.length)];
             emp.isDistantWorking = rnd.nextInt(10) > 5;
             emp.canGiveCredit = rnd.nextInt(10) > 5;
+            emp.birthday = new GregorianCalendar(1900 + rnd.nextInt(100), rnd.nextInt(13),rnd.nextInt(28)).getTime();
+            emp.post = "Кредитор-сантехник";
             services.getEmployeeService().addEmployee(emp);
             services.getOfficeService().addEmployeeToOffice(office.id, emp.id);
 
@@ -178,7 +183,7 @@ public class Startup {
             User user = new User();
             user.name = nameDict[rnd.nextInt(nameDict.length)];
             user.setSalary(rnd.nextDouble(100000));
-            user.birthday = new GregorianCalendar(1917, Calendar.FEBRUARY,1).getTime();
+            user.birthday = new GregorianCalendar(1900 + rnd.nextInt(100), rnd.nextInt(13),rnd.nextInt(28)).getTime();
             services.getUserService().addUser(user);
             services.getBankService().addBankUser(bank.id, user.id);
             initPaymentAccounts(user, bank);

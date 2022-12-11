@@ -25,11 +25,13 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             System.out.print("Представтесь системе (введите id клиента)...");
             int userId = sc.nextInt();
+            User curUser = services.getUserService().getUser(userId);
+            System.out.println("***Кредитный рейтинг пользователя: " + curUser.creditRate + "***");
 
             System.out.println("Введите сумму, которую хотите взять в кредит...");
             double summ = sc.nextDouble();
 
-            CreditAccount credAcc = getCredit(userId, services, summ);
+            CreditAccount credAcc = getCredit(curUser, services, summ);
             System.out.print("Поздравляем с успешным получением кредита! Данные вашего кредитного аккаунта:");
             System.out.print(credAcc.toShortString());
         }
@@ -40,68 +42,64 @@ public class Main {
 
     /**
      * Получить кредит
-     * @param userId Идентификатор клиента
+     * @param user Клиент
      * @param services Хранилище сервисов
      * @param creditSumm Сумма кредита
      * @return Кредитный счет, на который был выдан кредит
      * @throws Exception Ошибка выдачи кредита
      */
-    private static CreditAccount getCredit(int userId, ServiceHandler services, double creditSumm) throws Exception {
-        int bankId = ConsoleMenu.getIdFromUser(
+    private static CreditAccount getCredit(User user, ServiceHandler services, double creditSumm) throws Exception {
+        Bank bank = ConsoleMenu.getIdFromUser(
                 "Выберите банк для получения кредита (id)",
                 services.getBankService().getAll());
 
-        return getCreditFromBank(userId, bankId, services, creditSumm);
+        return getCreditFromBank(user, bank, services, creditSumm);
     }
 
     /**
      * Получить кредит у банка
-     * @param userId Идентификатор клиента
-     * @param bankId Идентификатор банка
+     * @param user Клиент
+     * @param bank Банк
      * @param services Хранилище сервисов
      * @param creditSumm Сумма кредита
      * @return Кредитный аккаунт с кредитом
      * @throws Exception Ошибка получения кредита
      */
     private static CreditAccount getCreditFromBank(
-            int userId,
-            int bankId,
+            User user,
+            Bank bank,
             ServiceHandler services,
             double creditSumm) throws Exception {
-        User curUser = services.getUserService().getUser(userId);
-        Bank bank = services.getBankService().get(bankId);
 
-        int officeId = ConsoleMenu.getIdFromUser(
+        BankOffice office = ConsoleMenu.getIdFromUser(
                 "Выберите офис (id)",
                 bank.offices);
-        BankOffice office = services.getOfficeService().getOffice(officeId);
-        while(!office.isWorking || !office.isCrediting || office.moneyAmount < creditSumm) {
-            System.out.print("В данном офисе получение кредита сейчас невозможно. Выберите другой офис (id)...");
-            officeId = new Scanner(System.in).nextInt();
-            office = services.getOfficeService().getOffice(officeId);
+        while(!office.isWorking || !office.isCrediting) {
+            office = ConsoleMenu.getIdFromUser(
+                    "В данном офисе получение кредита сейчас невозможно. Выберите другой офис (id)...",
+                    bank.offices);
         }
 
-        int emplId = ConsoleMenu.getIdFromUser(
+        Employee empl = ConsoleMenu.getIdFromUser(
                 "Выберите сотрудника (id)",
                 office.employees);
-        Employee empl = services.getEmployeeService().getEmployee(emplId);
         while(!empl.canGiveCredit) {
-            System.out.print("Данный сотрудник не выдает кредитов. Выберите другого (id)...");
-            emplId = new Scanner(System.in).nextInt();
-            empl = services.getEmployeeService().getEmployee(emplId);
+            empl = ConsoleMenu.getIdFromUser(
+                    "Данный сотрудник не выдает кредитов. Выберите другого (id)...",
+                    office.employees);
         }
 
         Optional<PaymentAccount> payAccOptional =
-                curUser.paymentAccounts.stream().filter(pAcc -> pAcc.bankId == bank.id).findFirst();
+                user.paymentAccounts.stream().filter(pAcc -> pAcc.bankId == bank.id).findFirst();
         PaymentAccount payAcc;
 
         if(payAccOptional.isPresent()) {
             payAcc = payAccOptional.get();
         } else {
-            payAcc = services.getPaymentAccountService().openPaymentAccount(curUser.id, bank.id, 0);
+            payAcc = services.getPaymentAccountService().openPaymentAccount(user.id, bank.id, 0);
         }
 
-        CreditValidation(curUser, bank);
+        CreditValidation(user, bank);
 
         Optional<BankAtm> atmOpt = office.atms.stream()
                 .filter(atm -> atm.getMoneyAmount() > creditSumm)
@@ -111,7 +109,7 @@ public class Main {
             if(moneyAmount != creditSumm)
                 throw new BankTransactionException("Непредвиденная ошибка получения денег банкомата", atmOpt.get().hashCode(), BankTransactions.Disbursement);
             return services.getCreditAccountService().openCreditAccount(
-                    curUser.id,
+                    user.id,
                     bank.id,
                     empl.id,
                     payAcc.id,
@@ -123,11 +121,15 @@ public class Main {
                     .filter(atm -> atm.getMoneyAmount() > creditSumm).findFirst();
             if(suitableAtm.isEmpty()) throw new BankTransactionException(
                                         "Нет подходящих банкоматов в банке",
-                                        curUser.hashCode(),
+                                        user.hashCode(),
                                         BankTransactions.Crediting);
 
-            System.out.print("В данном офисе нет подходящих банкоматов. Обратитесь в офис с id="+ suitableAtm.get().placingOffice.id);
-            return getCreditFromBank(userId, bankId, services, creditSumm);
+            BankOffice suitableOffice = suitableAtm.get().placingOffice;
+
+            System.out.print("В данном офисе нет подходящих банкоматов. " +
+                    "Обратитесь в офис по адресу \"" + suitableOffice.address
+                    + "\" (id="+ suitableAtm.get().placingOffice.id + ")");
+            return getCreditFromBank(user, bank, services, creditSumm);
         }
     }
 
@@ -139,7 +141,7 @@ public class Main {
      */
     private static void CreditValidation(User user, Bank bank) throws Exception {
         if(user.creditRate < 5000 && bank.rate > 50) {
-            throw new ValidationException("Пользователь с id=" + user.id, "creditRate", 5000);
+            throw new ValidationException("Пользователь с id=" + user.id, "creditRate", user.creditRate);
         }
     }
 }

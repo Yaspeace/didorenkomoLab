@@ -69,7 +69,7 @@ public class BankAtm extends BaseNameEntity {
 
     public String toShortString() {
         return String.format("id=%s; name=%s; address=%s; status=%s; isGivesMoney=%s; " +
-                "isTakesMoney=%s; moneyAmount=%s",
+                "isTakesMoney=%s; moneyAmount=%.2f",
                 id,
                 name,
                 address,
@@ -82,7 +82,7 @@ public class BankAtm extends BaseNameEntity {
     @Override
     public String toString() {
         return String.format("BankAtm: id=%s;name=%s;address=%s;status=%s;bankId=%s;placingOfficeId=%s;serveEmployeeId=%s;" +
-                        "isGivesMoney=%s;isTakesMoney=%s;moneyAmount=%s;servicePrice=%s",
+                        "isGivesMoney=%s;isTakesMoney=%s;moneyAmount=%.2f;servicePrice=%.2f",
                 id,
                 name,
                 address,

@@ -3,6 +3,9 @@ package bank.entity;
 import bank.entity.base.BaseNameEntity;
 import helpers.CollectionPrinter;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**Модель пользователя*/
@@ -56,10 +59,10 @@ public class User extends BaseNameEntity {
     }
 
     public String toShortString() {
-        return String.format("id=%s; name=%s; birthday=%s; workingPlase=%s; creditRate=%s; salary=%s;",
+        return String.format("id=%s; name=%s; birthday=%s; workingPlase=%s; creditRate=%s; salary=%.2f;",
                 id,
                 name,
-                birthday,
+                new SimpleDateFormat("dd.MM.yyyy").format(birthday),
                 workingPlace,
                 creditRate,
                 salary);
@@ -73,12 +76,12 @@ public class User extends BaseNameEntity {
                         \sbirthday=%s;
                         \sworkingPlace=%s;
                         \screditRate=%s,
-                        \ssalary=%s;
+                        \ssalary=%.2f;
                         \spaymentAccounts=%s;
                         \screditAccounts=%s""",
                 id,
                 name,
-                birthday,
+                new SimpleDateFormat("dd.MM.yyyy").format(birthday),
                 workingPlace,
                 creditRate,
                 salary,

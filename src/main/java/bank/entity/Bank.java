@@ -49,17 +49,21 @@ public class Bank extends BaseNameEntity {
      * Установить количетсов денег банка
      * @param value Количество денег
      */
-    public void setTotalMoneyAmount(double value)
+    public void setTotalMoneyAmount(double value) throws Exception
     {
+        if(value < 0)
+            throw new Exception("Попытка установить отрицательную сумму: " + value);
+
         totalMoneyAmount = value;
-        if(totalMoneyAmount < 0) totalMoneyAmount = 0;
     }
 
     /**
      * Получить количество денег банка
      * @return Количество денег
      */
-    public double getTotalMoneyAmount() { return totalMoneyAmount; }
+    public double getTotalMoneyAmount() {
+        return totalMoneyAmount + offices.stream().mapToDouble(BankOffice::getMoneyAmount).sum();
+    }
 
     /**
      * Конструктор
@@ -77,7 +81,7 @@ public class Bank extends BaseNameEntity {
 
     public String toShortString() {
         return String.format("id=%s; name=%s; officeNum=%s; atmNum=%s; " +
-                "employeeNum=%s; clientNum=%s; rate=%s; percent=%s; totalMoneyAmount=%s;",
+                "employeeNum=%s; clientNum=%s; rate=%s; percent=%.3f; totalMoneyAmount=%.2f;",
                 id,
                 name,
                 officeNum,
@@ -86,7 +90,7 @@ public class Bank extends BaseNameEntity {
                 clientNum,
                 rate,
                 percent,
-                totalMoneyAmount);
+                getTotalMoneyAmount());
     }
 
     public String toString() {
@@ -99,8 +103,8 @@ public class Bank extends BaseNameEntity {
                         \semployeeNum=%s;
                         \sclientNum=%s;
                         \srate=%s;
-                        \spercent=%s;
-                        \stotalMoneyAmount=%s;
+                        \spercent=%.3f;
+                        \stotalMoneyAmount=%.2f;
                         \satms=%s;
                         \soffices=%s;
                         \susers=%s;
@@ -114,7 +118,7 @@ public class Bank extends BaseNameEntity {
                 clientNum,
                 rate,
                 percent,
-                totalMoneyAmount,
+                getTotalMoneyAmount(),
                 CollectionPrinter.collectionToString(atms),
                 CollectionPrinter.collectionToString(offices),
                 CollectionPrinter.collectionToString(users),

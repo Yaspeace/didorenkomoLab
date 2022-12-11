@@ -83,7 +83,6 @@ public class AtmServiceImpl implements AtmService {
             throw new Exception("Сумма в банкомате (" + atm.getMoneyAmount() + ") меньше запрашиваемой (" + amount + ")");
         double res = Math.min(amount, atm.getMoneyAmount());
         atm.setMoneyAmount(atm.getMoneyAmount() - amount);
-        atm.bank.setTotalMoneyAmount(atm.bank.getTotalMoneyAmount() - amount);
         return res;
     }
 
@@ -91,7 +90,6 @@ public class AtmServiceImpl implements AtmService {
     public double depositMoney(int atmId, double amount) {
         BankAtm atm = rep.atms.get(atmId);
         atm.setMoneyAmount(atm.getMoneyAmount() + amount);
-        atm.bank.setTotalMoneyAmount(atm.bank.getTotalMoneyAmount() + amount);
         return amount;
     }
 }

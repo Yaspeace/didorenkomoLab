@@ -29,7 +29,7 @@ public class BankOffice extends BaseNameEntity {
     public boolean isTakesMoney;
 
     /**Кол-во денег в офисе*/
-    public double moneyAmount;
+    private double moneyAmount;
 
     /**Стоимость аренды офиса*/
     public double rentPrice;
@@ -48,6 +48,16 @@ public class BankOffice extends BaseNameEntity {
         atms = new LinkedList<>();
     }
 
+    public double getMoneyAmount() {
+        return moneyAmount + atms.stream().mapToDouble(BankAtm::getMoneyAmount).sum();
+    }
+
+    public void setMoneyAmount(double value) throws Exception {
+        if(value < 0)
+            throw new Exception("Попытка задать отрицательное количество денег: " + value);
+        moneyAmount = value;
+    }
+
     public String toShortString() {
         return String.format("id=%s; name=%s; address=%s; isWorking=%s; canPlaceAtm=%s;" +
                 "atmNum=%s; isCrediting=%s; isGivesMoney=%s; isTakesMoney=%s; moneyAmount=%s;",
@@ -60,7 +70,7 @@ public class BankOffice extends BaseNameEntity {
                 isCrediting,
                 isGivesMoney,
                 isTakesMoney,
-                moneyAmount);
+                getMoneyAmount());
     }
 
     @Override
@@ -76,7 +86,7 @@ public class BankOffice extends BaseNameEntity {
                 isCrediting,
                 isGivesMoney,
                 isTakesMoney,
-                moneyAmount,
+                getMoneyAmount(),
                 rentPrice);
     }
 }
