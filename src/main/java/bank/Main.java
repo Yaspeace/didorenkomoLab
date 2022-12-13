@@ -9,6 +9,7 @@ import bank.helpers.ConsoleLogger;
 import bank.helpers.Logger;
 import bank.helpers.ServiceHandler;
 import bank.helpers.Startup;
+import bank.helpers.serialization.Serializer;
 import bank.ui.ConsoleMenu;
 
 import java.util.*;
@@ -29,14 +30,27 @@ public class Main {
             System.out.print("Представтесь системе (введите id клиента)...");
             int userId = sc.nextInt();
             User curUser = services.getUserService().getUser(userId);
-            System.out.println("***Кредитный рейтинг пользователя: " + curUser.creditRate + "***");
+
+            String serialized = Serializer.serializeMany(curUser.paymentAccounts);
+
+            System.out.println("------------SERIALIZE-------------");
+            System.out.println(serialized);
+            System.out.println("----------------------------------");
+
+            var deserialized = Serializer.deserializeMany(serialized);
+
+            System.out.println("-----------DESERIALIZE------------");
+            System.out.println(deserialized);
+            System.out.println("----------------------------------");
+
+            /*System.out.println("***Кредитный рейтинг пользователя: " + curUser.creditRate + "***");
 
             System.out.println("Введите сумму, которую хотите взять в кредит...");
             double summ = sc.nextDouble();
 
             CreditAccount credAcc = getCredit(curUser, services, summ);
             System.out.print("Поздравляем с успешным получением кредита! Данные вашего кредитного аккаунта:");
-            System.out.print(credAcc.toShortString());
+            System.out.print(credAcc.toShortString());*/
         }
         catch(Exception ex) {
             logger.logError("Ошибка работы приложения: " + ex.getMessage());
