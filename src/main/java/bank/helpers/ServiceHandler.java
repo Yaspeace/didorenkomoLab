@@ -1,4 +1,4 @@
-package helpers;
+package bank.helpers;
 
 import bank.dataaccess.BankRepository;
 import bank.service.*;

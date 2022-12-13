@@ -1,7 +1,7 @@
-package exceptions;
+package bank.exceptions;
 
 /**Исключение выполнения CRUD-операции**/
-public class CrudOperationException extends Exception {
+public class CrudOperationException extends RuntimeException {
     /**Имя класса сущности, над которой производилась операция**/
     private final String className;
 

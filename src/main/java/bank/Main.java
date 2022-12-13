@@ -2,11 +2,14 @@ package bank;
 
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
-import exceptions.BankTransactionException;
-import exceptions.BankTransactions;
-import exceptions.ValidationException;
-import helpers.*;
-import ui.ConsoleMenu;
+import bank.exceptions.BankTransactionException;
+import bank.exceptions.BankTransactions;
+import bank.exceptions.ValidationException;
+import bank.helpers.ConsoleLogger;
+import bank.helpers.Logger;
+import bank.helpers.ServiceHandler;
+import bank.helpers.Startup;
+import bank.ui.ConsoleMenu;
 
 import java.util.*;
 
@@ -89,15 +92,10 @@ public class Main {
                     office.employees);
         }
 
-        Optional<PaymentAccount> payAccOptional =
-                user.paymentAccounts.stream().filter(pAcc -> pAcc.bankId == bank.id).findFirst();
-        PaymentAccount payAcc;
-
-        if(payAccOptional.isPresent()) {
-            payAcc = payAccOptional.get();
-        } else {
-            payAcc = services.getPaymentAccountService().openPaymentAccount(user.id, bank.id, 0);
-        }
+        PaymentAccount payAcc = user.paymentAccounts.stream()
+                .filter(pAcc -> pAcc.bankId == bank.id)
+                .findFirst()
+                .orElseGet(() -> services.getPaymentAccountService().openPaymentAccount(user.id, bank.id, 0));
 
         CreditValidation(user, bank);
 

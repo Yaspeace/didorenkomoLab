@@ -1,4 +1,4 @@
-package exceptions;
+package bank.exceptions;
 
 /**Перечисление CRUD-операции**/
 public enum CrudOperations {

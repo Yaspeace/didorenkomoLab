@@ -1,7 +1,7 @@
 package bank.service;
 
 import bank.entity.PaymentAccount;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -24,14 +24,14 @@ public interface PaymentAccountService {
      * Добавить платежный счет
      * @return Модель нового платежного счета
      */
-    PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws Exception;
+    PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws RuntimeException;
 
     /**
      * Изменить платежный счет
      * @param model Модель платежного счета для изменения
      * @return Измененная модель
      */
-    PaymentAccount updatePaymentAccount(PaymentAccount model) throws Exception;
+    PaymentAccount updatePaymentAccount(PaymentAccount model) throws RuntimeException;
 
     /**
      * Открыть платежный счет
@@ -40,5 +40,5 @@ public interface PaymentAccountService {
      * @param initialSumm Начальная сумма на счете
      * @return Открытый платежный счет
      */
-    PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws Exception;
+    PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws RuntimeException;
 }

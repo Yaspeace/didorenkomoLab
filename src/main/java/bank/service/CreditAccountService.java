@@ -1,7 +1,7 @@
 package bank.service;
 
 import bank.entity.CreditAccount;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -21,14 +21,14 @@ public interface CreditAccountService {
      * Добавить новый кредитный аккаунт
      * @return Модель нового кредитного счета
      */
-    CreditAccount addCreditAccount(CreditAccount creditAcc) throws Exception;
+    CreditAccount addCreditAccount(CreditAccount creditAcc) throws RuntimeException;
 
     /**
      * Изменить кредитный счет
      * @param model Модель кредитного счета для изменения
      * @return Измененная модель
      */
-    CreditAccount updateCreditAccount(CreditAccount model) throws Exception;
+    CreditAccount updateCreditAccount(CreditAccount model) throws RuntimeException;
 
     /**
      * Открыть кредитный счет
@@ -40,5 +40,5 @@ public interface CreditAccountService {
      * @param months Число месяцев действия кредитного счета
      * @return Открытый кредитный счет
      */
-    CreditAccount openCreditAccount(int userId, int bankId, int employeeId, int paymentAccountId, double monthPayment, int months) throws Exception;
+    CreditAccount openCreditAccount(int userId, int bankId, int employeeId, int paymentAccountId, double monthPayment, int months) throws RuntimeException;
 }

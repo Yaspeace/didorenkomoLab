@@ -3,8 +3,7 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.User;
 import bank.service.UserService;
-import exceptions.NotFoundException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -25,13 +24,13 @@ public class UserServiceImpl implements UserService {
         return rep.users.get();
     }
 
-    public User addUser(User user) throws Exception {
+    public User addUser(User user) throws RuntimeException {
         rep.users.add(user);
         return user;
     }
 
     @Override
-    public User updateUser(User model) throws Exception {
+    public User updateUser(User model) throws RuntimeException {
         return rep.users.update(model);
     }
 }

@@ -1,7 +1,7 @@
-package exceptions;
+package bank.exceptions;
 
 /**Исключение валидации объекта**/
-public class ValidationException extends Exception {
+public class ValidationException extends RuntimeException {
 
     /**Имя поля, не прошедшего валидацию**/
     private final String fieldName;

@@ -1,4 +1,4 @@
-package helpers;
+package bank.helpers;
 
 /**
  * Базовый интерфейс логера

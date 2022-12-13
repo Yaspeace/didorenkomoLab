@@ -1,7 +1,7 @@
 package bank.service;
 
 import bank.entity.Employee;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -19,12 +19,12 @@ public interface EmployeeService {
      * Добавить нового сотрудника
      * @return Модель нового сотрудника
      */
-    Employee addEmployee(Employee entity) throws Exception;
+    Employee addEmployee(Employee entity) throws RuntimeException;
 
     /**
      * Изменить сотрудника
      * @param model Модель сотрудника для изменения
      * @return Измененная модель
      */
-    Employee updateEmployee(Employee model) throws Exception;
+    Employee updateEmployee(Employee model) throws RuntimeException;
 }

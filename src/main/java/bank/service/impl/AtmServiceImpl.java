@@ -6,10 +6,8 @@ import bank.entity.BankOffice;
 import bank.entity.Employee;
 import bank.entity.enums.AtmStatuses;
 import bank.service.AtmService;
-import exceptions.CrudOperationException;
-import exceptions.NotFoundException;
-import exceptions.ObjectAccessException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
+import bank.exceptions.ObjectAccessException;
 
 import java.util.Collection;
 
@@ -40,18 +38,18 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public BankAtm addAtm(BankAtm atm) throws Exception {
+    public BankAtm addAtm(BankAtm atm) throws RuntimeException {
         rep.atms.add(atm);
         return atm;
     }
 
     @Override
-    public BankAtm updateAtm(BankAtm model) throws Exception {
+    public BankAtm updateAtm(BankAtm model) throws RuntimeException {
         return rep.atms.update(model);
     }
 
     @Override
-    public void placeToOffice(BankAtm atm, BankOffice office) throws Exception {
+    public void placeToOffice(BankAtm atm, BankOffice office) throws RuntimeException {
         if(!office.canPlaceAtm) return;
 
         atm.placingOfficeId = office.id;
@@ -65,7 +63,7 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public BankAtm setEmployee(int atmId, Employee employee) throws Exception {
+    public BankAtm setEmployee(int atmId, Employee employee) throws RuntimeException {
         BankAtm atm = rep.atms.get(atmId);
         atm.serveEmployeeId = employee.id;
         atm.serveEmployee = employee;
@@ -73,14 +71,14 @@ public class AtmServiceImpl implements AtmService {
     }
 
     @Override
-    public double takeMoney(int atmId, double amount) throws Exception {
+    public double takeMoney(int atmId, double amount) throws RuntimeException {
         BankAtm atm = rep.atms.get(atmId);
         if(!atm.isGivesMoney)
             throw new ObjectAccessException(atm.name, "не работает на выдачу");
         if(atm.status == AtmStatuses.noMoney || atm.status == AtmStatuses.notWorking)
             throw new ObjectAccessException(atm.name, "находится в не рабочем состоянии");
         if(atm.getMoneyAmount() < amount)
-            throw new Exception("Сумма в банкомате (" + atm.getMoneyAmount() + ") меньше запрашиваемой (" + amount + ")");
+            throw new RuntimeException("Сумма в банкомате (" + atm.getMoneyAmount() + ") меньше запрашиваемой (" + amount + ")");
         double res = Math.min(amount, atm.getMoneyAmount());
         atm.setMoneyAmount(atm.getMoneyAmount() - amount);
         return res;

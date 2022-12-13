@@ -1,7 +1,7 @@
-package exceptions;
+package bank.exceptions;
 
 /**Исключение банковской транзакции**/
-public class BankTransactionException extends Exception {
+public class BankTransactionException extends RuntimeException {
     /**Номер транзакции**/
     private final long number;
 

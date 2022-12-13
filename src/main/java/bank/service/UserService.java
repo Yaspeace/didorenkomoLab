@@ -1,7 +1,7 @@
 package bank.service;
 
 import bank.entity.User;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -24,12 +24,12 @@ public interface UserService {
      * Добавить нового пользователя
      * @return Модель нового пользователя
      */
-    User addUser(User user) throws Exception;
+    User addUser(User user) throws RuntimeException;
 
     /**
      * Изменить пользователя
      * @param model Модель пользователя для изменения
      * @return Измененная модель
      */
-    User updateUser(User model) throws Exception;
+    User updateUser(User model) throws RuntimeException;
 }

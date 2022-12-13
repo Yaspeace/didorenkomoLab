@@ -2,8 +2,6 @@ package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
 import bank.entity.enums.AtmStatuses;
-import exceptions.BankTransactionException;
-import exceptions.BankTransactions;
 
 /**Модель банкомата*/
 public class BankAtm extends BaseNameEntity {

@@ -3,8 +3,7 @@ package bank.service;
 import bank.entity.BankAtm;
 import bank.entity.BankOffice;
 import bank.entity.Employee;
-import exceptions.CrudOperationException;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -28,21 +27,21 @@ public interface AtmService {
      * @param atm Модель банкомата на добавление
      * @return Модель добавленного банкомата
      * **/
-    BankAtm addAtm(BankAtm atm) throws Exception;
+    BankAtm addAtm(BankAtm atm) throws RuntimeException;
 
     /**
      * Изменить модель банкомата
      * @param model Модель банкомата для изменения
      * @return Измененная модель
      * **/
-    BankAtm updateAtm(BankAtm model) throws Exception;
+    BankAtm updateAtm(BankAtm model) throws RuntimeException;
 
     /**
      * Поместить банкомат в офис
      * @param atm Банкомат
      * @param office Офис
      * **/
-    void placeToOffice(BankAtm atm, BankOffice office) throws Exception;
+    void placeToOffice(BankAtm atm, BankOffice office) throws RuntimeException;
 
     /**
      * Назначить обслуживающего сотрудника
@@ -50,7 +49,7 @@ public interface AtmService {
      * @param employee Обслуживающий сотрудник для назначения
      * @return Модель банкомата после назначения сотрудника
      * **/
-    BankAtm setEmployee(int atmId, Employee employee) throws Exception;
+    BankAtm setEmployee(int atmId, Employee employee) throws RuntimeException;
 
     /**
      * Получение денег у банкомата
@@ -58,7 +57,7 @@ public interface AtmService {
      * @param amount Количество денег к получению
      * @return Количество фактически полученных денег
      * **/
-    double takeMoney(int atmId, double amount) throws Exception;
+    double takeMoney(int atmId, double amount) throws RuntimeException;
 
     /**
      * Добавление денег в банкомат

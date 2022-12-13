@@ -2,9 +2,8 @@ package bank.service.impl;
 
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
-import bank.entity.base.BaseEntity;
 import bank.service.*;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -57,20 +56,20 @@ public class BankServiceImpl implements BankService {
         return rep.banks.get();
     }
 
-    public Bank addBank(Bank bank) throws Exception {
+    public Bank addBank(Bank bank) throws RuntimeException {
         rep.banks.add(bank);
         return bank;
     }
 
-    public Bank updateBank(Bank b) throws Exception {
+    public Bank updateBank(Bank b) throws RuntimeException {
         return rep.banks.update(b);
     }
 
-    public Bank addAtmToBank(int bankId, int atmId) throws Exception {
+    public Bank addAtmToBank(int bankId, int atmId) throws RuntimeException {
         Bank bank = this.get(bankId);
         BankAtm atm = atmService.getAtm(atmId);
 
-        if(bank.atms.contains(atm)) throw new Exception("Банкомат с id=" + atm.id + " уже содержится в банке с id=" + bank.id);
+        if(bank.atms.contains(atm)) throw new RuntimeException("Банкомат с id=" + atm.id + " уже содержится в банке с id=" + bank.id);
 
         atm.bankId = bankId;
         atm.bank = bank;
@@ -81,7 +80,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addNewBankOffice(int bankId, int officeId) throws Exception {
+    public Bank addNewBankOffice(int bankId, int officeId) throws RuntimeException {
         Bank bank = this.get(bankId);
         BankOffice office = officeService.getOffice(officeId);
 
@@ -91,7 +90,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addEmployeeToBank(int bankId, int employeeId) throws Exception {
+    public Bank addEmployeeToBank(int bankId, int employeeId) throws RuntimeException {
         Bank bank = this.get(bankId);
         Employee empl = employeeService.getEmployee(employeeId);
 
@@ -104,7 +103,7 @@ public class BankServiceImpl implements BankService {
         return updateBank(bank);
     }
 
-    public Bank addBankUser(int bankId, int userId) throws Exception {
+    public Bank addBankUser(int bankId, int userId) throws RuntimeException {
         Bank bank = this.get(bankId);
         User user = userService.getUser(userId);
 

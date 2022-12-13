@@ -52,9 +52,9 @@ public class BankOffice extends BaseNameEntity {
         return moneyAmount + atms.stream().mapToDouble(BankAtm::getMoneyAmount).sum();
     }
 
-    public void setMoneyAmount(double value) throws Exception {
+    public void setMoneyAmount(double value) throws RuntimeException {
         if(value < 0)
-            throw new Exception("Попытка задать отрицательное количество денег: " + value);
+            throw new RuntimeException("Попытка задать отрицательное количество денег: " + value);
         moneyAmount = value;
     }
 

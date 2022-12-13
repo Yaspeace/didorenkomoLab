@@ -1,7 +1,7 @@
-package exceptions;
+package bank.exceptions;
 
 /**Исключение доступности объекта**/
-public class ObjectAccessException extends Exception {
+public class ObjectAccessException extends RuntimeException {
     /**Имя объекта**/
     private final String objectName;
 

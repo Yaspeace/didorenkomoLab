@@ -3,8 +3,7 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
 import bank.service.*;
-import exceptions.NotFoundException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -57,12 +56,12 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         return rep.creditAccounts.get();
     }
 
-    public CreditAccount addCreditAccount(CreditAccount creditAcc) throws Exception {
+    public CreditAccount addCreditAccount(CreditAccount creditAcc) throws RuntimeException {
         rep.creditAccounts.add(creditAcc);
         return creditAcc;
     }
 
-    public CreditAccount updateCreditAccount(CreditAccount model) throws Exception {
+    public CreditAccount updateCreditAccount(CreditAccount model) throws RuntimeException {
         return rep.creditAccounts.update(model);
     }
 
@@ -71,7 +70,7 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                                            int employeeId,
                                            int paymentAccountId,
                                            double monthPayment,
-                                           int months) throws Exception {
+                                           int months) throws RuntimeException {
         User user = userService.getUser(userId);
         Bank bank = bankService.get(bankId);
         Employee empl = employeeService.getEmployee(employeeId);

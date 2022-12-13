@@ -1,7 +1,7 @@
 package bank.service;
 
 import bank.entity.BankOffice;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -25,14 +25,14 @@ public interface BankOfficeService {
      * @param office Модель офиса на добавление
      * @return Модель нового офиса
      *  **/
-    BankOffice addOffice(BankOffice office) throws Exception;
+    BankOffice addOffice(BankOffice office) throws RuntimeException;
 
     /**
      * Изменить модель офиса
      * @param office Модель офиса для изменения
      * @return Измененная модель
      * **/
-    BankOffice updateBankOffice(BankOffice office) throws Exception;
+    BankOffice updateBankOffice(BankOffice office) throws RuntimeException;
 
-    BankOffice addEmployeeToOffice(int officeId, int employeeId) throws Exception;
+    BankOffice addEmployeeToOffice(int officeId, int employeeId) throws RuntimeException;
 }

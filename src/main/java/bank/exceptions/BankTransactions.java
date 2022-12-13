@@ -1,4 +1,4 @@
-package exceptions;
+package bank.exceptions;
 
 public enum BankTransactions {
     /**Внесение денег на счет**/

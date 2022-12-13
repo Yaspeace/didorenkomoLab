@@ -1,10 +1,9 @@
 package bank.dataaccess;
 
 import bank.entity.base.BaseEntity;
-import exceptions.CrudOperationException;
-import exceptions.CrudOperations;
+import bank.exceptions.CrudOperationException;
+import bank.exceptions.CrudOperations;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.LinkedList;
 

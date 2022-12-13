@@ -5,9 +5,7 @@ import bank.entity.BankOffice;
 import bank.entity.Employee;
 import bank.service.BankOfficeService;
 import bank.service.EmployeeService;
-import exceptions.CrudOperationException;
-import exceptions.NotFoundException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -38,16 +36,16 @@ public class BankOfficeServiceImpl implements BankOfficeService {
         return rep.offices.get();
     }
 
-    public BankOffice addOffice(BankOffice office) throws Exception {
+    public BankOffice addOffice(BankOffice office) throws RuntimeException {
         rep.offices.add(office);
         return office;
     }
 
-    public BankOffice updateBankOffice(BankOffice office) throws Exception {
+    public BankOffice updateBankOffice(BankOffice office) throws RuntimeException {
         return rep.offices.update(office);
     }
 
-    public BankOffice addEmployeeToOffice(int officeId, int employeeId) throws Exception {
+    public BankOffice addEmployeeToOffice(int officeId, int employeeId) throws RuntimeException {
         BankOffice office = this.getOffice(officeId);
         Employee empl = employeeService.getEmployee(employeeId);
 

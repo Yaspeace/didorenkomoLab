@@ -5,8 +5,7 @@ import bank.entity.*;
 import bank.service.BankService;
 import bank.service.PaymentAccountService;
 import bank.service.UserService;
-import exceptions.NotFoundException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -45,16 +44,16 @@ public class PaymentAccountServiceImpl implements PaymentAccountService {
         return rep.paymentAccounts.get();
     }
 
-    public PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws Exception {
+    public PaymentAccount addPaymentAccount(PaymentAccount paymentAcc) throws RuntimeException {
         rep.paymentAccounts.add(paymentAcc);
         return paymentAcc;
     }
 
-    public PaymentAccount updatePaymentAccount(PaymentAccount model) throws Exception {
+    public PaymentAccount updatePaymentAccount(PaymentAccount model) throws RuntimeException {
         return rep.paymentAccounts.update(model);
     }
 
-    public PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws Exception {
+    public PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws RuntimeException {
         PaymentAccount pAcc = new PaymentAccount();
         User user = userService.getUser(userId);
         Bank bank = bankService.get(bankId);

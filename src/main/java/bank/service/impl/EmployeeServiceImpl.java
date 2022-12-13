@@ -3,8 +3,7 @@ package bank.service.impl;
 import bank.dataaccess.BankRepository;
 import bank.entity.Employee;
 import bank.service.EmployeeService;
-import exceptions.NotFoundException;
-import helpers.Logger;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -31,13 +30,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         return rep.employees.get();
     }
 
-    public Employee addEmployee(Employee entity) throws Exception {
+    public Employee addEmployee(Employee entity) throws RuntimeException {
         rep.employees.add(entity);
         return entity;
     }
 
     @Override
-    public Employee updateEmployee(Employee model) throws Exception {
+    public Employee updateEmployee(Employee model) throws RuntimeException {
         return rep.employees.update(model);
     }
 }

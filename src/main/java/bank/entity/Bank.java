@@ -1,7 +1,7 @@
 package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
-import helpers.CollectionPrinter;
+import bank.helpers.CollectionPrinter;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -43,18 +43,18 @@ public class Bank extends BaseNameEntity {
     public Collection<PaymentAccount> paymentAccounts;
 
     /**Всего денег у банка*/
-    private double totalMoneyAmount;
+    private double moneyAmount;
 
     /**
      * Установить количетсов денег банка
      * @param value Количество денег
      */
-    public void setTotalMoneyAmount(double value) throws Exception
+    public void setTotalMoneyAmount(double value) throws RuntimeException
     {
         if(value < 0)
-            throw new Exception("Попытка установить отрицательную сумму: " + value);
+            throw new RuntimeException("Попытка установить отрицательную сумму: " + value);
 
-        totalMoneyAmount = value;
+        moneyAmount = value;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Bank extends BaseNameEntity {
      * @return Количество денег
      */
     public double getTotalMoneyAmount() {
-        return totalMoneyAmount + offices.stream().mapToDouble(BankOffice::getMoneyAmount).sum();
+        return moneyAmount + offices.stream().mapToDouble(BankOffice::getMoneyAmount).sum();
     }
 
     /**

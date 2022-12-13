@@ -1,4 +1,4 @@
-package ui;
+package bank.ui;
 
 import bank.entity.base.BaseEntity;
 
@@ -8,9 +8,9 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    public static <T extends BaseEntity> T getIdFromUser(String title, Collection<T> objects) throws Exception {
+    public static <T extends BaseEntity> T getIdFromUser(String title, Collection<T> objects) throws RuntimeException {
         if(objects.size() < 1) {
-            throw new Exception("Нет объектов для отображения");
+            throw new RuntimeException("Нет объектов для отображения");
         }
         Separator();
         System.out.println(title);

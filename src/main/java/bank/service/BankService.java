@@ -1,8 +1,7 @@
 package bank.service;
 
 import bank.entity.*;
-import bank.entity.base.BaseEntity;
-import exceptions.NotFoundException;
+import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
 
@@ -25,40 +24,40 @@ public interface BankService {
      * Добавить новый банк
      * @return Модель нового банка
      */
-    Bank addBank(Bank bank) throws Exception;
+    Bank addBank(Bank bank) throws RuntimeException;
 
     /**
      * Изменить банк
      * @param bank Модель банка для изменения
      * @return Измененная модель
      */
-    Bank updateBank(Bank bank) throws Exception;
+    Bank updateBank(Bank bank) throws RuntimeException;
 
     /**
      * Добавить банку банкомат
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addAtmToBank(int bankId, int atmId) throws Exception;
+    Bank addAtmToBank(int bankId, int atmId) throws RuntimeException;
 
     /**
      * Добавить офис банку
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addNewBankOffice(int bankId, int officeId) throws Exception;
+    Bank addNewBankOffice(int bankId, int officeId) throws RuntimeException;
 
     /**
      * Добавить сотрудника банку
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addEmployeeToBank(int bankId, int employeeId) throws Exception;
+    Bank addEmployeeToBank(int bankId, int employeeId) throws RuntimeException;
 
     /**
      * Добавить пользователя банка
      * @param bankId Идентификатор банка
      * @return Модель банка
      */
-    Bank addBankUser(int bankId, int userId) throws Exception;
+    Bank addBankUser(int bankId, int userId) throws RuntimeException;
 }

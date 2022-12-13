@@ -1,4 +1,4 @@
-package helpers;
+package bank.helpers;
 
 import java.util.Collection;
 import java.util.StringJoiner;

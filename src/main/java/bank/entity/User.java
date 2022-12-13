@@ -1,11 +1,9 @@
 package bank.entity;
 
 import bank.entity.base.BaseNameEntity;
-import helpers.CollectionPrinter;
+import bank.helpers.CollectionPrinter;
 
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 /**Модель пользователя*/

@@ -1,8 +1,7 @@
-package helpers;
+package bank.helpers;
 
 import bank.entity.*;
 
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -38,7 +37,7 @@ public class Startup {
      * Инициализировать сущности
      * @throws Exception Ошибка инициализации сущностей
      */
-    public void initEntities() throws Exception {
+    public void initEntities() throws RuntimeException {
         Bank bank = new Bank();
         bank.name = "ФТБ";
         services.getBankService().addBank(bank);
@@ -75,7 +74,7 @@ public class Startup {
      * @param bank Банк
      * @throws Exception Ошибка инициализации
      */
-    private void initBankAtms(Bank bank, BankOffice office) throws Exception {
+    private void initBankAtms(Bank bank, BankOffice office) throws RuntimeException {
         BankAtm atm = new BankAtm();
         atm.name = bank.name + office.address + " банкомат № 1";
         atm.isGivesMoney = true;
@@ -108,7 +107,7 @@ public class Startup {
      * Инициализировать банковские офисы
      * @param bank Банк
      */
-    private void initOffices(Bank bank) throws Exception {
+    private void initOffices(Bank bank) throws RuntimeException {
         BankOffice office = new BankOffice();
         office.address = "г. Запупок, ул. Выхухольная, д.69а";
         office.rentPrice = 5000;
@@ -153,7 +152,7 @@ public class Startup {
      * Инициализировать сотрудников
      * @param office Офис
      */
-    private void initEmployees(BankOffice office) throws Exception {
+    private void initEmployees(BankOffice office) throws RuntimeException {
         for(int i = 0; i < 5; i++) {
             Employee emp = new Employee();
             emp.name = nameDict[rnd.nextInt(nameDict.length)];
@@ -178,7 +177,7 @@ public class Startup {
      * @param bank Банк
      * @throws Exception Ошибка инициализации
      */
-    private void initClients(Bank bank) throws Exception {
+    private void initClients(Bank bank) throws RuntimeException {
         for(int i = 0; i < 5; i++) {
             User user = new User();
             user.name = nameDict[rnd.nextInt(nameDict.length)];
@@ -196,7 +195,7 @@ public class Startup {
      * @param user Клиент
      * @param bank Банк
      */
-    private void initPaymentAccounts(User user, Bank bank) throws Exception {
+    private void initPaymentAccounts(User user, Bank bank) throws RuntimeException {
         for(int i = 0; i < 2; i++) {
             services.getPaymentAccountService().openPaymentAccount(user.id, bank.id, rnd.nextDouble(500));
         }
@@ -208,7 +207,7 @@ public class Startup {
      * @param bank Банк
      * @throws Exception Ошибка инициализации
      */
-    private void initCreditAccounts(User user, Bank bank) throws Exception {
+    private void initCreditAccounts(User user, Bank bank) throws RuntimeException {
         Employee giver = null;
         for(Employee empl : bank.employees) {
             if(empl.canGiveCredit) {
@@ -216,7 +215,7 @@ public class Startup {
                 break;
             }
         }
-        if(giver == null) throw new Exception("У банка \"" + bank.name + "\" нет сотрудников, которые выдают кредиты");
+        if(giver == null) throw new RuntimeException("У банка \"" + bank.name + "\" нет сотрудников, которые выдают кредиты");
 
         for(PaymentAccount payAcc : user.paymentAccounts) {
             services.getCreditAccountService().openCreditAccount(

@@ -1,7 +1,7 @@
-package exceptions;
+package bank.exceptions;
 
 /**Исключение ненахождения объекта по идентификатору**/
-public class NotFoundException extends Exception {
+public class NotFoundException extends RuntimeException {
     /**Идентификатор, по которому осуществлялся поиск**/
     private final int id;
     /**Класс объекта, подлежащего поиску**/
