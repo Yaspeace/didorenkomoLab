@@ -113,7 +113,6 @@ public class Startup {
         office.rentPrice = 5000;
         office.canPlaceAtm = true;
         office.isWorking = true;
-        office.isCrediting = true;
         office.isGivesMoney = true;
         office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);
@@ -126,7 +125,6 @@ public class Startup {
         office.rentPrice = 5000;
         office.canPlaceAtm = false;
         office.isWorking = true;
-        office.isCrediting = true;
         office.isGivesMoney = true;
         office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);
@@ -139,7 +137,6 @@ public class Startup {
         office.rentPrice = 4000;
         office.canPlaceAtm = true;
         office.isWorking = true;
-        office.isCrediting = true;
         office.isGivesMoney = true;
         office.isTakesMoney = true;
         services.getOfficeService().addOffice(office);

@@ -1,14 +1,13 @@
 package bank.service.impl;
 
+import bank.clients.Client;
 import bank.dataaccess.BankRepository;
 import bank.entity.*;
+import bank.helpers.serialization.Serializer;
 import bank.service.*;
 import bank.exceptions.NotFoundException;
 
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.Map;
+import java.util.*;
 
 /**Сервис по работе с кредитными счетами*/
 public class CreditAccountServiceImpl implements CreditAccountService {
@@ -27,6 +26,8 @@ public class CreditAccountServiceImpl implements CreditAccountService {
     /**Сервис для работы с платежными счетами*/
     private final PaymentAccountService paymentAccountService;
 
+    private final Client reciever;
+
     /**
      * Конструктор
      * @param rep Репозиторий
@@ -39,12 +40,14 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                                     UserService userService,
                                     BankService bankService,
                                     EmployeeService employeeService,
-                                    PaymentAccountService paymentAccountService) {
+                                    PaymentAccountService paymentAccountService,
+                                    Client reciever) {
         this.rep = rep;
         this.userService = userService;
         this.bankService = bankService;
         this.employeeService = employeeService;
         this.paymentAccountService = paymentAccountService;
+        this.reciever = reciever;
     }
 
     public CreditAccount getCreditAccount(int id) throws NotFoundException {
@@ -121,5 +124,16 @@ public class CreditAccountServiceImpl implements CreditAccountService {
                 newPayAcc.id,
                 newCredAcc.monthPayment,
                 newCredAcc.months);
+    }
+
+    @Override
+    public Collection<CreditAccount> migrateFromSource(String source, int payAccId) throws Exception {
+        String serialized = reciever.get(source);
+        Collection<HashMap<String, String>> maps = Serializer.deserializeMany(serialized);
+        LinkedList<CreditAccount> res = new LinkedList<>();
+        for(Map<String, String> map : maps) {
+            res.add(migrateToNewPaymentAccount(map, payAccId));
+        }
+        return res;
     }
 }

@@ -19,9 +19,6 @@ public class BankOffice extends BaseNameEntity {
     /**Число банкоматов в офисе*/
     public int atmNum;
 
-    /**Можно ли получить в офисе кредит*/
-    public boolean isCrediting;
-
     /**Работает ли на выдачу денег*/
     public boolean isGivesMoney;
 
@@ -58,6 +55,11 @@ public class BankOffice extends BaseNameEntity {
         moneyAmount = value;
     }
 
+    /**Можно ли получить в офисе кредит*/
+    public boolean isCrediting() {
+        return !employees.isEmpty() && employees.stream().anyMatch(empl -> empl.canGiveCredit);
+    }
+
     public String toShortString() {
         return String.format("id=%s; name=%s; address=%s; isWorking=%s; canPlaceAtm=%s;" +
                 "atmNum=%s; isCrediting=%s; isGivesMoney=%s; isTakesMoney=%s; moneyAmount=%s;",
@@ -67,7 +69,7 @@ public class BankOffice extends BaseNameEntity {
                 isWorking,
                 canPlaceAtm,
                 atmNum,
-                isCrediting,
+                isCrediting(),
                 isGivesMoney,
                 isTakesMoney,
                 getMoneyAmount());
@@ -83,7 +85,7 @@ public class BankOffice extends BaseNameEntity {
                 isWorking,
                 canPlaceAtm,
                 atmNum,
-                isCrediting,
+                isCrediting(),
                 isGivesMoney,
                 isTakesMoney,
                 getMoneyAmount(),

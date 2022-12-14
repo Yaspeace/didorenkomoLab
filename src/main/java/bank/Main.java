@@ -6,7 +6,6 @@ import bank.exceptions.BankTransactionException;
 import bank.exceptions.BankTransactions;
 import bank.exceptions.ValidationException;
 import bank.helpers.*;
-import bank.helpers.serialization.Serializer;
 import bank.ui.ConsoleMenu;
 
 import java.util.*;
@@ -28,39 +27,85 @@ public class Main {
             int userId = sc.nextInt();
             User curUser = services.getUserService().getUser(userId);
 
-            migratePayAccs(curUser, services);
+            String[] variants = new String[] {
+                    "Получить кредит",
+                    "Перенести платежные счета по банку",
+                    "Перенести кредитные счета по платежному",
+                    "Выход"
+            };
 
-            /*
-             getCredit(curUser, services);
-            */
+            int userInput = ConsoleMenu.getVariant("Что бы вы хотели сделать?", variants);
+            while(userInput != 3) {
+                switch (userInput) {
+                    case 0 -> getCredit(curUser, services);
+                    case 1 -> migratePayAccs(curUser, services);
+                    case 2 -> migrateCredAccs(curUser, services);
+                }
+                userInput = ConsoleMenu.getVariant("Хотите еще что-нибудь?", variants);
+            }
+
+            ConsoleMenu.showTitle("Будем рады видеть вас снова!");
         }
         catch(Exception ex) {
             logger.logError("Ошибка работы приложения: " + ex.getMessage());
         }
     }
 
+    /**
+     * Перенос кредитных счетов
+     * @param user Пользователь
+     * @param services Хранилище сервисов
+     * @throws Exception Ошибка переноса счетов
+     */
+    private static void migrateCredAccs(User user, ServiceHandler services) throws Exception {
+        int[] payAccIds = user.creditAccounts.stream()
+                .map(x -> x.paymentAccountId).distinct()
+                .mapToInt(Integer::intValue).toArray();
+        Collection<PaymentAccount> payAccs = services.getPaymentAccountService().getAll().stream()
+                .filter(x -> Arrays.stream(payAccIds).anyMatch(y -> y == x.id))
+                .toList();
+        PaymentAccount chosenPayAcc = ConsoleMenu.getObjectFromUser(
+                "Выберите платежный счет для переноса с него кредитных счетов (id)",
+                payAccs);
+        logger.log("Выгрузка начата");
+        services.getUserService().sendCredAccounts(user.id, chosenPayAcc.id, "credAccs.txt");
+        logger.log("Успешно!");
+
+        PaymentAccount newPayAcc = ConsoleMenu.getObjectFromUser(
+                "Выберите новый платежный счет (id)",
+                user.paymentAccounts);
+        Collection<CreditAccount> migrated =
+                services.getCreditAccountService().migrateFromSource("credAccs.txt", newPayAcc.id);
+        ConsoleMenu.printCollection("Перенесенные кредитные счета", migrated);
+    }
+
+    /**
+     * Перенос платежных счетов пользователя
+     * @param user Пользователь
+     * @param services Хранилище сервисов
+     * @throws Exception Ошибка переноса счетов
+     */
     private static void migratePayAccs(User user, ServiceHandler services) throws Exception {
-        var bankIds = user.paymentAccounts.stream().map(x -> x.bankId).distinct().mapToInt(Integer::intValue).toArray();
+        int[] bankIds = user.paymentAccounts.stream().map(x -> x.bankId).distinct().mapToInt(Integer::intValue).toArray();
         Collection<Bank> banks = services.getBankService().getAll()
                 .stream().filter(x ->
                         Arrays.stream(bankIds).anyMatch(y -> y == x.id))
                 .toList();
-        Bank bank = ConsoleMenu.getIdFromUser(
+        Bank bank = ConsoleMenu.getObjectFromUser(
                 "У вас есть счета в указанных банках. Выберите один для выгрузки счетов (id)",
                 banks);
-        ConsoleMenu.title("Выгрузка начата");
+        logger.log("Выгрузка начата");
         services.getUserService().sendPayAccounts(user.id, bank.id, "payAccs.txt");
-        ConsoleMenu.title("Выгрузка закончена");
+        logger.log("Успешно!");
 
         banks = services.getBankService().getAll();
-        bank = ConsoleMenu.getIdFromUser(
+        bank = ConsoleMenu.getObjectFromUser(
                 "Выберите банк для переноса счетов (id)",
                 banks);
 
         Collection<PaymentAccount> migratedAccounts =
                 services.getPaymentAccountService().migrateFromSource("payAccs.txt", bank.id);
-        ConsoleMenu.title("Перенесенные счета");
-        System.out.println(CollectionPrinter.collectionToString(migratedAccounts));
+        ConsoleMenu.printCollection("Перенесенные платежные счета", migratedAccounts);
     }
 
     /**
@@ -74,7 +119,7 @@ public class Main {
         System.out.println("Введите сумму, которую хотите взять в кредит...");
         double creditSumm = new Scanner(System.in).nextDouble();
 
-        Bank bank = ConsoleMenu.getIdFromUser(
+        Bank bank = ConsoleMenu.getObjectFromUser(
                 "Выберите банк для получения кредита (id)",
                 services.getBankService().getAll());
 
@@ -98,20 +143,20 @@ public class Main {
             ServiceHandler services,
             double creditSumm) throws Exception {
 
-        BankOffice office = ConsoleMenu.getIdFromUser(
+        BankOffice office = ConsoleMenu.getObjectFromUser(
                 "Выберите офис (id)",
                 bank.offices);
-        while(!office.isWorking || !office.isCrediting) {
-            office = ConsoleMenu.getIdFromUser(
+        while(!office.isWorking || !office.isCrediting()) {
+            office = ConsoleMenu.getObjectFromUser(
                     "В данном офисе получение кредита сейчас невозможно. Выберите другой офис (id)...",
                     bank.offices);
         }
 
-        Employee empl = ConsoleMenu.getIdFromUser(
+        Employee empl = ConsoleMenu.getObjectFromUser(
                 "Выберите сотрудника (id)",
                 office.employees);
         while(!empl.canGiveCredit) {
-            empl = ConsoleMenu.getIdFromUser(
+            empl = ConsoleMenu.getObjectFromUser(
                     "Данный сотрудник не выдает кредитов. Выберите другого (id)...",
                     office.employees);
         }

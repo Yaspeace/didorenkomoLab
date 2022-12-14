@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+/**
+ * Клиент файловой системы
+ */
 public class FileClient implements Client {
     private final String rootDir;
 

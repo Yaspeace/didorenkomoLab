@@ -37,7 +37,7 @@ public class ServiceHandler {
         userService = new UserServiceImpl(rep, fileClient);
         bankService = new BankServiceImpl(rep, atmService, officeService, employeeService, userService);
         payAccService = new PaymentAccountServiceImpl(rep, userService, bankService, fileClient);
-        credAccService = new CreditAccountServiceImpl(rep, userService, bankService, employeeService, payAccService);
+        credAccService = new CreditAccountServiceImpl(rep, userService, bankService, employeeService, payAccService, fileClient);
 
     }
 

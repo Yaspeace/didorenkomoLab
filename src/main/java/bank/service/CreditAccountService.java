@@ -51,4 +51,13 @@ public interface CreditAccountService {
      * @throws Exception Ошибка переноса
      */
     CreditAccount migrateToNewPaymentAccount(Map<String, String> credAccData, int payAccId) throws Exception;
+
+    /**
+     * Перенести кредитные счета через удаленный источние
+     * @param source Путь
+     * @param payAccId Идентификатор платежного счета, на который нужно перенести
+     * @return Коллекция перенесенных кредитных счетов
+     * @throws Exception Ошибка переноса
+     */
+    Collection<CreditAccount> migrateFromSource(String source, int payAccId) throws Exception;
 }
