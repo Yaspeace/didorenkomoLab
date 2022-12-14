@@ -205,7 +205,7 @@ public class Startup {
      * Инициализировать кредитные счета клиента банка
      * @param user Клиент
      * @param bank Банк
-     * @throws Exception Ошибка инициализации
+     * @throws RuntimeException Ошибка инициализации
      */
     private void initCreditAccounts(User user, Bank bank) throws RuntimeException {
         Employee giver = null;

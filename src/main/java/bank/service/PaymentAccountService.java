@@ -4,6 +4,7 @@ import bank.entity.PaymentAccount;
 import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**Интерфейс сервисов по работе с платежными счетами*/
 public interface PaymentAccountService {
@@ -41,4 +42,22 @@ public interface PaymentAccountService {
      * @return Открытый платежный счет
      */
     PaymentAccount openPaymentAccount(int userId, int bankId, double initialSumm) throws RuntimeException;
+
+    /**
+     * Перенести счет в банк через сериализацию
+     * @param payAccData Сериализованные данные платежного счета в старом банке
+     * @param bankId Идентификатор нового банка
+     * @return Перенесенный платежный счет
+     * @throws Exception Ошибка переноса
+     */
+    PaymentAccount migrateToBank(Map<String, String> payAccData, int bankId) throws Exception;
+
+    /**
+     * Перенести счета через удаленный источник
+     * @param source Путь
+     * @param bankId Идентификатор банка-цели
+     * @return Список перенесенных счетов
+     * @throws Exception Ошибка переноса
+     */
+    Collection<PaymentAccount> migrateFromSource(String source, int bankId) throws Exception;
 }

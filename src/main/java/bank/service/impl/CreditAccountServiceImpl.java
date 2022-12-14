@@ -8,6 +8,7 @@ import bank.exceptions.NotFoundException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 /**Сервис по работе с кредитными счетами*/
 public class CreditAccountServiceImpl implements CreditAccountService {
@@ -102,5 +103,23 @@ public class CreditAccountServiceImpl implements CreditAccountService {
         paymentAccountService.updatePaymentAccount(payAcc);
 
         return this.addCreditAccount(credAcc);
+    }
+
+    @Override
+    public CreditAccount migrateToNewPaymentAccount(Map<String, String> credAccData, int payAccId) throws Exception {
+        CreditAccount newCredAcc = CreditAccount.fromMap(credAccData);
+
+        if(newCredAcc.paymentAccountId == payAccId)
+            throw new Exception("Ошибка переноса: попытка перенести кредитный счет в тот же платежный счет");
+
+        PaymentAccount newPayAcc = paymentAccountService.getPaymentAccount(payAccId);
+
+        return openCreditAccount(
+                newCredAcc.userId,
+                newPayAcc.bankId,
+                newCredAcc.employeeId,
+                newPayAcc.id,
+                newCredAcc.monthPayment,
+                newCredAcc.months);
     }
 }

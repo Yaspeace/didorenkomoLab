@@ -12,13 +12,13 @@ public class ConsoleMenu {
         if(objects.size() < 1) {
             throw new RuntimeException("Нет объектов для отображения");
         }
-        Separator();
+        separator();
         System.out.println(title);
-        Separator();
+        separator();
         for(BaseEntity o : objects) {
             System.out.println(o.toShortString());
         }
-        Separator();
+        separator();
         System.out.print("Введите id нужной сущности...");
 
         Scanner sc = new Scanner(System.in);
@@ -32,7 +32,11 @@ public class ConsoleMenu {
         return obj.get();
     }
 
-    private static void Separator() {
+    public static void separator() {
         System.out.println("----------------------");
+    }
+
+    public static void title(String title) {
+        System.out.println("----------" + title + "----------");
     }
 }

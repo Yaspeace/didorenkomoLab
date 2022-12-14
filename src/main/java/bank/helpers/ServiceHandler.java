@@ -1,5 +1,7 @@
 package bank.helpers;
 
+import bank.clients.Client;
+import bank.clients.FileClient;
 import bank.dataaccess.BankRepository;
 import bank.service.*;
 import bank.service.impl.*;
@@ -28,13 +30,15 @@ public class ServiceHandler {
      * @param rep Репозиторий
      */
     public ServiceHandler(BankRepository rep) {
+        Client fileClient = new FileClient("migrationFiles/");
         atmService = new AtmServiceImpl(rep);
         employeeService = new EmployeeServiceImpl(rep);
         officeService = new BankOfficeServiceImpl(rep, employeeService);
-        userService = new UserServiceImpl(rep);
+        userService = new UserServiceImpl(rep, fileClient);
         bankService = new BankServiceImpl(rep, atmService, officeService, employeeService, userService);
-        payAccService = new PaymentAccountServiceImpl(rep, userService, bankService);
+        payAccService = new PaymentAccountServiceImpl(rep, userService, bankService, fileClient);
         credAccService = new CreditAccountServiceImpl(rep, userService, bankService, employeeService, payAccService);
+
     }
 
     /**Получить сервис для работы с банкоматами**/

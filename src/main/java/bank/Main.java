@@ -5,10 +5,7 @@ import bank.entity.*;
 import bank.exceptions.BankTransactionException;
 import bank.exceptions.BankTransactions;
 import bank.exceptions.ValidationException;
-import bank.helpers.ConsoleLogger;
-import bank.helpers.Logger;
-import bank.helpers.ServiceHandler;
-import bank.helpers.Startup;
+import bank.helpers.*;
 import bank.helpers.serialization.Serializer;
 import bank.ui.ConsoleMenu;
 
@@ -31,46 +28,59 @@ public class Main {
             int userId = sc.nextInt();
             User curUser = services.getUserService().getUser(userId);
 
-            String serialized = Serializer.serializeMany(curUser.paymentAccounts);
+            migratePayAccs(curUser, services);
 
-            System.out.println("------------SERIALIZE-------------");
-            System.out.println(serialized);
-            System.out.println("----------------------------------");
-
-            var deserialized = Serializer.deserializeMany(serialized);
-
-            System.out.println("-----------DESERIALIZE------------");
-            System.out.println(deserialized);
-            System.out.println("----------------------------------");
-
-            /*System.out.println("***Кредитный рейтинг пользователя: " + curUser.creditRate + "***");
-
-            System.out.println("Введите сумму, которую хотите взять в кредит...");
-            double summ = sc.nextDouble();
-
-            CreditAccount credAcc = getCredit(curUser, services, summ);
-            System.out.print("Поздравляем с успешным получением кредита! Данные вашего кредитного аккаунта:");
-            System.out.print(credAcc.toShortString());*/
+            /*
+             getCredit(curUser, services);
+            */
         }
         catch(Exception ex) {
             logger.logError("Ошибка работы приложения: " + ex.getMessage());
         }
     }
 
+    private static void migratePayAccs(User user, ServiceHandler services) throws Exception {
+        var bankIds = user.paymentAccounts.stream().map(x -> x.bankId).distinct().mapToInt(Integer::intValue).toArray();
+        Collection<Bank> banks = services.getBankService().getAll()
+                .stream().filter(x ->
+                        Arrays.stream(bankIds).anyMatch(y -> y == x.id))
+                .toList();
+        Bank bank = ConsoleMenu.getIdFromUser(
+                "У вас есть счета в указанных банках. Выберите один для выгрузки счетов (id)",
+                banks);
+        ConsoleMenu.title("Выгрузка начата");
+        services.getUserService().sendPayAccounts(user.id, bank.id, "payAccs.txt");
+        ConsoleMenu.title("Выгрузка закончена");
+
+        banks = services.getBankService().getAll();
+        bank = ConsoleMenu.getIdFromUser(
+                "Выберите банк для переноса счетов (id)",
+                banks);
+
+        Collection<PaymentAccount> migratedAccounts =
+                services.getPaymentAccountService().migrateFromSource("payAccs.txt", bank.id);
+        ConsoleMenu.title("Перенесенные счета");
+        System.out.println(CollectionPrinter.collectionToString(migratedAccounts));
+    }
+
     /**
      * Получить кредит
      * @param user Клиент
      * @param services Хранилище сервисов
-     * @param creditSumm Сумма кредита
-     * @return Кредитный счет, на который был выдан кредит
      * @throws Exception Ошибка выдачи кредита
      */
-    private static CreditAccount getCredit(User user, ServiceHandler services, double creditSumm) throws Exception {
+    private static void getCredit(User user, ServiceHandler services) throws Exception {
+        System.out.println("***Кредитный рейтинг пользователя: " + user.creditRate + "***");
+        System.out.println("Введите сумму, которую хотите взять в кредит...");
+        double creditSumm = new Scanner(System.in).nextDouble();
+
         Bank bank = ConsoleMenu.getIdFromUser(
                 "Выберите банк для получения кредита (id)",
                 services.getBankService().getAll());
 
-        return getCreditFromBank(user, bank, services, creditSumm);
+        CreditAccount credAcc = getCreditFromBank(user, bank, services, creditSumm);
+        System.out.print("Поздравляем с успешным получением кредита! Данные вашего кредитного аккаунта:");
+        System.out.print(credAcc.toShortString());
     }
 
     /**
@@ -132,9 +142,9 @@ public class Main {
             Optional<BankAtm> suitableAtm = bank.atms.stream()
                     .filter(atm -> atm.getMoneyAmount() > creditSumm).findFirst();
             if(suitableAtm.isEmpty()) throw new BankTransactionException(
-                                        "Нет подходящих банкоматов в банке",
-                                        user.hashCode(),
-                                        BankTransactions.Crediting);
+                    "Нет подходящих банкоматов в банке",
+                    user.hashCode(),
+                    BankTransactions.Crediting);
 
             BankOffice suitableOffice = suitableAtm.get().placingOffice;
 

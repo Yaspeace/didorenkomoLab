@@ -32,4 +32,22 @@ public interface UserService {
      * @return Измененная модель
      */
     User updateUser(User model) throws RuntimeException;
+
+    /**
+     * Отправить информацию о платежных счетах клиента по банку на указанный путь
+     * @param userId Идентификатор клиента
+     * @param bankId Идентификатор банка
+     * @param destination Путь отправки
+     * @throws Exception Ошибка отправки
+     */
+    void sendPayAccounts(int userId, int bankId, String destination) throws Exception;
+
+    /**
+     * Отправить информацию о кредитных счетах пользователя по платежному счету на указанный путь
+     * @param userId Идентификатор клиента
+     * @param payAccId Идентификатор платежного счета
+     * @param destination Путь отправки
+     * @throws Exception Ошибка отправки
+     */
+    void sendCredAccounts(int userId, int payAccId, String destination) throws Exception;
 }

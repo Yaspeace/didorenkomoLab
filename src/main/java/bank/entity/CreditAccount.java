@@ -2,8 +2,11 @@ package bank.entity;
 
 import bank.entity.base.BaseEntity;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
+import java.util.Map;
 
 /**Модель кредитного счета*/
 public class CreditAccount extends BaseEntity {
@@ -64,5 +67,20 @@ public class CreditAccount extends BaseEntity {
                 percent,
                 employeeId,
                 paymentAccountId);
+    }
+
+    public static CreditAccount fromMap(Map<String, String> map) throws Exception {
+        CreditAccount res = new CreditAccount();
+        res.id = Integer.parseInt(map.get("id"));
+        res.bankName = map.get("bankName");
+        res.dateBegin = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us")).parse(map.get("dateBegin"));
+        res.dateEnd = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", new Locale("us")).parse(map.get("dateEnd"));
+        res.employeeId = Integer.parseInt(map.get("employeeId"));
+        res.months = Integer.parseInt(map.get("months"));
+        res.monthPayment = Double.parseDouble(map.get("monthPayment"));
+        res.percent = Double.parseDouble(map.get("percent"));
+        res.paymentAccountId = Integer.parseInt(map.get("paymentAccountId"));
+        res.userId = Integer.parseInt(map.get("userId"));
+        return res;
     }
 }

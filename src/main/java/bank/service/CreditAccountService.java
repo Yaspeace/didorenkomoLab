@@ -4,6 +4,7 @@ import bank.entity.CreditAccount;
 import bank.exceptions.NotFoundException;
 
 import java.util.Collection;
+import java.util.Map;
 
 /**Интерфейс сервисов по работе с кредитными счетами*/
 public interface CreditAccountService {
@@ -41,4 +42,13 @@ public interface CreditAccountService {
      * @return Открытый кредитный счет
      */
     CreditAccount openCreditAccount(int userId, int bankId, int employeeId, int paymentAccountId, double monthPayment, int months) throws RuntimeException;
+
+    /**
+     * Перенести данные кредитного счета в новый платежный счет через сериализацию
+     * @param credAccData Сериализованные данные кредитного счета со старым платежным счетом
+     * @param payAccId Идентификатор нового платежного счета
+     * @return Перенесенный кредитный счет
+     * @throws Exception Ошибка переноса
+     */
+    CreditAccount migrateToNewPaymentAccount(Map<String, String> credAccData, int payAccId) throws Exception;
 }

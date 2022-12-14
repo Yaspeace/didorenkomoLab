@@ -1,5 +1,7 @@
 package bank.helpers.serialization;
 
+import bank.entity.base.BaseEntity;
+
 import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -12,14 +14,14 @@ public class Serializer {
         String res = "{\n";
         Field[] fields = obj.getClass().getFields();
         int i = 0;
-        while(i < fields.length && fields[i].get(obj) instanceof Collection<?>) ++i;
+        while(i < fields.length && (fields[i].get(obj) instanceof Collection<?> || fields[i].get(obj) instanceof BaseEntity)) ++i;
         Object value = fields[i].get(obj);
 
         res += "\t{" + fields[i].getName() + ":" + (value == null ? "null" : value.toString()) + "}";
 
         for(int j = i + 1; j < fields.length; j++) {
             value = fields[j].get(obj);
-            if(value instanceof Collection<?>) continue;
+            if(value instanceof Collection<?> || value instanceof BaseEntity) continue;
             res += ",\n\t{" + fields[j].getName() + ":" + (value == null ? "null" : value.toString()) + "}";
         }
         res += "\n}";
