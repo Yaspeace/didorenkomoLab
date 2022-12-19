@@ -19,10 +19,10 @@ public class Serializer {
 
         res += "\t{" + fields[i].getName() + ":" + (value == null ? "null" : value.toString()) + "}";
 
-        for(int j = i + 1; j < fields.length; j++) {
-            value = fields[j].get(obj);
+        for(i = 1; i < fields.length; i++) {
+            value = fields[i].get(obj);
             if(value instanceof Collection<?> || value instanceof BaseEntity) continue;
-            res += ",\n\t{" + fields[j].getName() + ":" + (value == null ? "null" : value.toString()) + "}";
+            res += ",\n\t{" + fields[i].getName() + ":" + (value == null ? "null" : value.toString()) + "}";
         }
         res += "\n}";
         return res;

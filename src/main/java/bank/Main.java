@@ -6,6 +6,7 @@ import bank.exceptions.BankTransactionException;
 import bank.exceptions.BankTransactions;
 import bank.exceptions.ValidationException;
 import bank.helpers.*;
+import bank.helpers.serialization.Serializer;
 import bank.ui.ConsoleMenu;
 
 import java.util.*;
@@ -31,15 +32,17 @@ public class Main {
                     "Получить кредит",
                     "Перенести платежные счета по банку",
                     "Перенести кредитные счета по платежному",
+                    "Вывести информацию о счетах",
                     "Выход"
             };
 
             int userInput = ConsoleMenu.getVariant("Что бы вы хотели сделать?", variants);
-            while(userInput != 3) {
+            while(userInput != variants.length - 1) {
                 switch (userInput) {
                     case 0 -> getCredit(curUser, services);
                     case 1 -> migratePayAccs(curUser, services);
                     case 2 -> migrateCredAccs(curUser, services);
+                    case 3 -> showAccounts(curUser, services);
                 }
                 userInput = ConsoleMenu.getVariant("Хотите еще что-нибудь?", variants);
             }
@@ -49,6 +52,11 @@ public class Main {
         catch(Exception ex) {
             logger.logError("Ошибка работы приложения: " + ex.getMessage());
         }
+    }
+
+    private static void showAccounts(User user, ServiceHandler services) {
+        ConsoleMenu.printCollectionBeauty("Ваши платежные счета", user.paymentAccounts);
+        ConsoleMenu.printCollectionBeauty("Ваши кредитные счета", user.creditAccounts);
     }
 
     /**

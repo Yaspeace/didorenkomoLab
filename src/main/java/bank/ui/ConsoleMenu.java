@@ -55,6 +55,12 @@ public class ConsoleMenu {
         showSeparator();
     }
 
+    public static <T extends BaseEntity> void printCollectionBeauty(String title, Collection<T> objects) {
+        showTitle(title);
+        for(T o : objects) System.out.println(o.toShortString());
+        showSeparator();
+    }
+
     /**
      * Вывести разделитель
      */
